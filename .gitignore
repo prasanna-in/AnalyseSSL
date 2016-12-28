@@ -35,9 +35,6 @@ _testmain.go
 AnalyseSSL.iml
 *.iml
 .DS_Store
-Godeps/
+#Godeps/
 vendor/
-/AnalyseSSL.iml
-/Home/Home.iml
-/DB/DB.iml
-/Api/Api.iml
+
