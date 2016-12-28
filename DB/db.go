@@ -55,9 +55,11 @@ func (db *DB ) Login(username string,password string) *User {
 
 func Setup(db *DB) {
 	db.AutoMigrate(&User{})
-	user := User{Username:"Admin",Password:"Password",Access:"Admin"}
-	db.NewRecord(user)
-	err := db.Create(&user).Error
+	db.AutoMigrate(&Host{})
+	//user := User{Username:"Admin",Password:"Password",Access:"Admin"}
+	host := Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
+	db.NewRecord(host)
+	err := db.Create(&host).Error
 	//err := db.DropTableIfExists(&User{}).Error
 	if err != nil{
 		log.Fatal("Could Create Record ..")
