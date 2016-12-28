@@ -37,3 +37,7 @@ AnalyseSSL.iml
 .DS_Store
 Godeps/
 vendor/
+/AnalyseSSL.iml
+/Home/Home.iml
+/DB/DB.iml
+/Api/Api.iml
