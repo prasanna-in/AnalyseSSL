@@ -36,5 +36,5 @@ AnalyseSSL.iml
 *.iml
 .DS_Store
 #Godeps/
-vendor/
+#vendor/
 
