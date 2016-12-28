@@ -9,6 +9,8 @@ import (
 	"github.com/AnalyseSSL/Home"
 	"github.com/AnalyseSSL/DB"
 	"fmt"
+	"os"
+	"log"
 )
 
 
@@ -26,5 +28,10 @@ func main() {
 		DB.Setup(con)
 		fmt.Fprintln(resp,"PK was Here....")
 	})
-	http.ListenAndServe(":8088",context.ClearHandler(http.DefaultServeMux))
+	if os.Getenv("Env") == "heroku"{
+		log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"),context.ClearHandler(http.DefaultServeMux)))
+
+	}else {
+		log.Fatal(http.ListenAndServe(":8902",context.ClearHandler(http.DefaultServeMux)))
+	}
 }

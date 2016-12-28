@@ -32,6 +32,7 @@ type Host struct {
 type Scan struct {
 	gorm.Model
 	ScanTime time.Time
+	Result string
 }
 
 func CreateDB(connectionString string) *DB  {
