@@ -57,7 +57,7 @@ func Setup(db *DB) {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Host{})
 	//user := User{Username:"Admin",Password:"Password",Access:"Admin"}
-	host := Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
+	host := Host{Hostname:"https://ndtv.com.com",LastScan:time.Now(),NextScan:time.Now()}
 	db.NewRecord(host)
 	err := db.Create(&host).Error
 	//err := db.DropTableIfExists(&User{}).Error
