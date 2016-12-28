@@ -54,13 +54,13 @@ func (db *DB ) Login(username string,password string) *User {
 }
 
 func Setup(db *DB) {
-	//db.AutoMigrate(&User{})
-	//user := User{Username:"Admin",Password:"Password",Access:"Admin"}
-	//db.NewRecord(user)
-	//db.Create(&user)
+	db.AutoMigrate(&User{})
+	user := User{Username:"Admin",Password:"Password",Access:"Admin"}
+	db.NewRecord(user)
+	err := db.Create(&user).Error
 	//err := db.DropTableIfExists(&User{}).Error
-	//if err != nil{
-	//	log.Fatal("Could not Delete Table")
-	//}
-	db.CreateTable()
+	if err != nil{
+		log.Fatal("Could Create Record ..")
+	}
+	//db.CreateTable()
 }
