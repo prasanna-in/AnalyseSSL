@@ -6,17 +6,20 @@ import (
 	"net/http"
 	"github.com/AnalyseSSL/Api"
 	"fmt"
+	"github.com/AnalyseSSL/DB"
 )
 
-func handleHome(jar *sessions.CookieStore) http.Handler {
+func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
 			http.Redirect(resp,req,"/public/login.html",http.StatusSeeOther)
 			return
 		}
 		user :=Api.GetUser(resp,req,jar)
+		u, err := db.GetHosts(user)
 		resp.Header().Add("Content-Type", "text/html")
 		fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}</style></head><body>Hello %s<br/><a href='/host'>Host</a><br/><a href='/api/auth/logout'>Logout</a></body></html>",user)
+		fmt.Fprintln(resp,u,err)
 	})
 }
 func handleHost(jar *sessions.CookieStore) http.Handler {
@@ -26,8 +29,8 @@ func handleHost(jar *sessions.CookieStore) http.Handler {
 		}
 	})
 }
-func RegisterHandler(m *mux.Router,jar *sessions.CookieStore)  {
-	m.Handle("/home",handleHome(jar))
+func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
+	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar))
 }
 

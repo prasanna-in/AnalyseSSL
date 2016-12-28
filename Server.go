@@ -21,7 +21,7 @@ func main() {
 	muxInstance.StrictSlash(true)
 	cookieJar := sessions.NewCookieStore([]byte(os.Getenv("Encrypt")))
 	Api.RegisterHandler(muxInstance,cookieJar,con)
-	Home.RegisterHandler(muxInstance,cookieJar)
+	Home.RegisterHandler(muxInstance,cookieJar,con)
 	http.Handle("/",muxInstance)
 	muxInstance.PathPrefix("/public/").Handler(http.StripPrefix("/public/",http.FileServer(http.Dir("public/"))))
 	muxInstance.HandleFunc("/Setup", func(resp http.ResponseWriter, req *http.Request) {

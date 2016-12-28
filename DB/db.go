@@ -53,16 +53,30 @@ func (db *DB ) Login(username string,password string) *User {
 	return &user
 }
 
-func Setup(db *DB) {
-	db.AutoMigrate(&User{})
-	db.AutoMigrate(&Host{})
-	user := User{Username:"Admin2",Password:"Password",Access:"Admin"}
-	//host := Host{Hostname:"https://ndtv.com.com",LastScan:time.Now(),NextScan:time.Now()}
-	db.NewRecord(user)
-	err := db.Create(&user).Error
-	//err := db.DropTableIfExists(&User{}).Error
-	if err != nil{
-		log.Fatal("Could Create Record ..")
+func (db *DB) GetHosts(username string)(*User,error){
+	var host Host
+	var user User
+	user = username
+	err:=db.Model(&host).Related(&user).Error
+	if err!=nil{
+		return "Failed"
 	}
-	//db.CreateTable()
+	return user,nil
+
+}
+
+func Setup(db *DB) {
+	//db.AutoMigrate(&User{})
+	//db.AutoMigrate(&Host{})
+	//user := User{Username:"Admin2",Password:"Password",Access:"Admin"}
+	////host := Host{Hostname:"https://ndtv.com.com",LastScan:time.Now(),NextScan:time.Now()}
+	//db.NewRecord(user)
+	//err := db.Create(&user).Error
+	////err := db.DropTableIfExists(&User{}).Error
+	//if err != nil{
+	//	log.Fatal("Could Create Record ..")
+	//}
+	////db.CreateTable()
+	//var user User
+
 }
