@@ -16,10 +16,10 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			return
 		}
 		user :=Api.GetUser(resp,req,jar)
-		u, err := db.GetHosts(user)
+		j := db.GetHosts(user)
 		resp.Header().Add("Content-Type", "text/html")
 		fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}</style></head><body>Hello %s<br/><a href='/host'>Host</a><br/><a href='/api/auth/logout'>Logout</a></body></html>",user)
-		fmt.Fprintln(resp,u,err)
+		fmt.Fprintln(resp,j)
 	})
 }
 func handleHost(jar *sessions.CookieStore) http.Handler {

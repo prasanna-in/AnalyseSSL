@@ -53,16 +53,10 @@ func (db *DB ) Login(username string,password string) *User {
 	return &user
 }
 
-func (db *DB) GetHosts(username string)(*User,error){
-	var host Host
-	var user User
-	user = username
-	err:=db.Model(&host).Related(&user).Error
-	if err!=nil{
-		return "Failed"
-	}
-	return user,nil
-
+func (db *DB) GetHosts(username string)([]Host){
+	var h []Host
+	db.Where("Username=?",username).Related(&h)
+	return h
 }
 
 func Setup(db *DB) {
