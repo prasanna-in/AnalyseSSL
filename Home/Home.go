@@ -35,7 +35,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		hosts := db.GetHosts(user)
 		scans := db.GetScans(hosts[0].ID)
-		fmt.Fprintln(scans)
+		fmt.Fprintln(resp,scans)
 	})
 }
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
