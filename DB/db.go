@@ -64,17 +64,17 @@ func (db *DB) GetHosts(username string)([]Host){
 func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
 	//db.CreateTable(User{},Host{})
-	user := User{Username:"Admin",Password:"Password"}
-	db.Create(&user)
-	//var h Host
+	//user := User{Username:"Admin",Password:"Password"}
+	//db.Create(&user)
+	var h Host
 	var u User
-	//host :=Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
-	//e := db.Create(&host).Where(&User{gorm.Model.ID}).Error
-	//if e != nil{
-	//	log.Fatal(e)
-	//}
-	//db.First(&h)
+	host :=Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
+	e := db.Create(&host).Where(&User{gorm.Model.ID}).Error
+	if e != nil{
+		log.Fatal(e)
+	}
+	db.First(&h)
 	db.First(&u)
-	//log.Print("PK",h)
+	log.Print("PK",h)
 	log.Print("JK",u)
 }
