@@ -41,11 +41,11 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		if !Api.IsUserLoggedin(req,resp,jar){
 			http.Redirect(resp,req,"/public/login.html",http.StatusTemporaryRedirect)
 		}
-		params := mux.Vars(req)
+		req.ParseForm()
 		user := Api.GetUser(resp,req,jar)
 		DbUser := db.GetUser(user)
 		host := DB.Host{
-			Hostname:params["host"],
+			Hostname:req.Form.Get("hostname"),
 			UserID:DbUser.ID,
 		}
 		db.CreateHost(host)
@@ -55,7 +55,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
-	m.Handle("/host/add/{host}",handleAddHost(jar,db))
+	m.Handle("/host/add/",handleAddHost(jar,db)).Methods(http.MethodPost)
 }
 
 
