@@ -67,7 +67,7 @@ func (db *DB) GetHosts(username string)([]Host){
 }
 func (db *DB ) GetHost(id int) *Host {
 	host := db.findHostbyID(id)
-	return &host
+	return host
 }
 func (db *DB)GetScans(hostID int) []Scan {
 	host := db.findHostbyID(hostID)
@@ -78,7 +78,7 @@ func (db *DB)GetScans(hostID int) []Scan {
 }
 func (db *DB ) GetScan(scanID int) *Scan {
 	scan := db.findByScanID(scanID)
-	return &scan
+	return scan
 
 }
 
