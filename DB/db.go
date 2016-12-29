@@ -80,8 +80,5 @@ func Setup(db *DB) {
 	user := User{Username:"Admin",Password:"Password",Hosts:[]Host{{Hostname:"google.com"},{Hostname:"Yahoo.com"}}}
 	//user2:=User{Username:"Admin",Password:"Password",Hosts:Host{Hostname:"Https://Yahoo.com"}}
 	db.Create(&user)
-	db.Create(&user2)
-	var u User
-	db.First(&u)
-	log.Println("User",u)
+
 }
