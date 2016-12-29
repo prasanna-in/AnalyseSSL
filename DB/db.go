@@ -69,7 +69,7 @@ func (db *DB ) GetHost(id int) *Host {
 	host := db.findHostbyID(id)
 	return host
 }
-func (db *DB)GetScans(hostID int) []Scan {
+func (db *DB)GetScans(hostID uint) []Scan {
 	host := db.findHostbyID(hostID)
 	var scans []Scan
 	db.Model(&host).Related(&scans)
