@@ -28,6 +28,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
 			http.Redirect(resp,req,"/public/login.html",http.StatusSeeOther)
+			return
 		}
 		user :=Api.GetUser(resp,req,jar)
 		hosts := db.GetHosts(user)
@@ -40,6 +41,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
 			http.Redirect(resp,req,"/public/login.html",http.StatusTemporaryRedirect)
+			return
 		}
 		req.ParseForm()
 		user := Api.GetUser(resp,req,jar)
