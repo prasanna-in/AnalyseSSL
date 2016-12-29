@@ -61,9 +61,20 @@ func (db *DB) GetHosts(username string)([]Host){
 	db.Model(&user).Related(&hosts)
 	return hosts
 }
+func (db *DB ) GetHost(id int) Host {
+	host := db.findHostbyID(id)
+	return host
+}
+func (db *DB ) findHostbyID(id int) Host  {
+	var h Host
+	db.Where("ID=?",id).First(&h)
+	return h
+}
 
-func (db *DB)findByUsername(str string)(u *User) {
-	return db.Where("Username=?",str).First(&u)
+func (db *DB)findByUsername(str string)*User {
+	var u User
+	db.Where("Username=?",str).First(&u)
+	return u
 }
 
 func Setup(db *DB) {

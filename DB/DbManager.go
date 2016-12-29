@@ -5,4 +5,5 @@ type DbManager interface {
 	Close() error
 	Login(string,string) *User
 	GetHosts(string) ([]Host)
+	GetHost(int) Host
 }
