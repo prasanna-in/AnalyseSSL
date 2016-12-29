@@ -65,10 +65,12 @@ func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
 	//db.CreateTable(User{},Host{})
 	//user := User{Username:"Admin",Password:"Password"}
+	var h Host
 	host :=Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
 	e := db.Save(&host).Where(&User{Username:"Admin"}).Error
 	if e != nil{
 		log.Fatal(e)
 	}
-
+	db.First(&h)
+	log.Print("PK",h)
 }
