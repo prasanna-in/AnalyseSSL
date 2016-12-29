@@ -66,11 +66,14 @@ func Setup(db *DB) {
 	//db.CreateTable(User{},Host{})
 	//user := User{Username:"Admin",Password:"Password"}
 	var h Host
+	var u User
 	host :=Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
 	e := db.Save(&host).Where(&User{Username:"Admin"}).Error
 	if e != nil{
 		log.Fatal(e)
 	}
 	db.First(&h)
+	db.First(&u)
 	log.Print("PK",h)
+	log.Print("JK",u)
 }
