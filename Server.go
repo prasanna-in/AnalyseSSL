@@ -23,6 +23,7 @@ func main() {
 	Api.RegisterHandler(muxInstance,cookieJar,con)
 	Home.RegisterHandler(muxInstance,cookieJar,con)
 	http.Handle("/",muxInstance)
+	muxInstance.Handle("/",http.RedirectHandler("/public/login.html",http.StatusTemporaryRedirect))
 	muxInstance.PathPrefix("/public/").Handler(http.StripPrefix("/public/",http.FileServer(http.Dir("public/"))))
 	muxInstance.HandleFunc("/Setup", func(resp http.ResponseWriter, req *http.Request) {
 		DB.Setup(con)
