@@ -27,16 +27,20 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 
 	})
 }
-func handleHost(jar *sessions.CookieStore) http.Handler {
+func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
 			http.Redirect(resp,req,"/public/login.html",http.StatusSeeOther)
 		}
+		user :=Api.GetUser(resp,req,jar)
+		hosts := db.GetHosts(user)
+		scans := db.GetScans(hosts[0].ID)
+		fmt.Fprintln(scans)
 	})
 }
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
-	m.Handle("/host",handleHost(jar))
+	m.Handle("/host",handleHost(jar,db))
 }
 
 
