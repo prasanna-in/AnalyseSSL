@@ -65,7 +65,7 @@ func (db *DB) GetHosts(username string)([]Host){
 	db.Model(&user).Related(&hosts)
 	return hosts
 }
-func (db *DB ) GetHost(id int) *Host {
+func (db *DB ) GetHost(id uint) *Host {
 	host := db.findHostbyID(id)
 	return host
 }
@@ -76,7 +76,7 @@ func (db *DB)GetScans(hostID uint) []Scan {
 	return scans
 
 }
-func (db *DB ) GetScan(scanID int) *Scan {
+func (db *DB ) GetScan(scanID uint) *Scan {
 	scan := db.findByScanID(scanID)
 	return scan
 
@@ -95,7 +95,7 @@ func (db *DB ) findHostbyID(id uint) *Host  {
 	db.Where("ID=?",id).First(&h)
 	return &h
 }
-func (db *DB ) findByScanID(scanID int)  *Scan{
+func (db *DB ) findByScanID(scanID uint)  *Scan{
 	var s Scan
 	db.Where("ID=?",scanID).First(&s)
 	return &s
