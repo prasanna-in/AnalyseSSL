@@ -74,7 +74,7 @@ func (db *DB ) findHostbyID(id int) Host  {
 func (db *DB)findByUsername(str string)*User {
 	var u User
 	db.Where("Username=?",str).First(&u)
-	return u
+	return &u
 }
 
 func Setup(db *DB) {
