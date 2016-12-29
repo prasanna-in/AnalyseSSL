@@ -56,9 +56,11 @@ func (db *DB ) Login(username string,password string) *User {
 }
 
 func (db *DB) GetHosts(username string)([]Host){
-	var h []Host
-	db.Where("Username=?",username).Related(&h)
-	return h
+	var user User
+	db.Where("Username=?",username).First(&user)
+	var hosts []Host
+	db.Model(&user).Related(&hosts)
+	return hosts
 }
 
 func Setup(db *DB) {
@@ -73,11 +75,13 @@ func Setup(db *DB) {
 	//db.First(&u)
 	//db.Model(&u).Related(&h)
 	//log.Println("PKKK",h)
-	u := User{}
-	db.Where("Username=?","Admin").First(&u)
-	host := Host{
-		Hostname:"pk.com",
-		UserID:u.ID,
-	}
-	db.Create(&host)
+	//u := User{}
+	//db.Where("Username=?","Admin").First(&u)
+	//host := Host{
+	//	Hostname:"pk.com",
+	//	UserID:u.ID,
+	//}
+	//db.Create(&host)
+
+
 }
