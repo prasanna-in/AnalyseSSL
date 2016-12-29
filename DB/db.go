@@ -82,6 +82,11 @@ func (db *DB ) GetScan(scanID uint) *Scan {
 
 }
 
+func (db *DB ) CreateUser(u User) error  {
+	e :=db.Create(&u).Error
+	return e
+}
+
 
 //***********
 
@@ -123,12 +128,12 @@ func Setup(db *DB) {
 	//	UserID:u.ID,
 	//}
 	//db.Create(&host)
-	host :=db.findHostbyID(1)
-	scan :=Scan{
-		Result:"This is Test",
-		HostID:host.ID,
-	}
-	db.Create(&scan)
-
-
+	//host :=db.findHostbyID(1)
+	//scan :=Scan{
+	//	Result:"This is Test",
+	//	HostID:host.ID,
+	//}
+	//db.Create(&scan)
+	//
+	db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"Trip.com"},{Hostname:"Gooli.com"}}})
 }
