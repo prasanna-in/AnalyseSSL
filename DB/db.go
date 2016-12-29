@@ -27,12 +27,14 @@ type Host struct {
 	LastScan time.Time
 	NextScan time.Time
 	Scans []Scan
+	UserID uint
 }
 
 type Scan struct {
 	gorm.Model
 	ScanTime time.Time
 	Result string
+	HostID uint
 }
 
 func CreateDB(connectionString string) *DB  {
@@ -60,17 +62,5 @@ func (db *DB) GetHosts(username string)([]Host){
 }
 
 func Setup(db *DB) {
-	//db.AutoMigrate(&User{})
-	//db.AutoMigrate(&Host{})
-	//user := User{Username:"Admin2",Password:"Password",Access:"Admin"}
-	host := Host{Hostname:"https://ndtv.com.com",LastScan:time.Now(),NextScan:time.Now()}
-	db.NewRecord(host)
-	//err := db.Create(&user).Error
-	////err := db.DropTableIfExists(&User{}).Error
-	//if err != nil{
-	//	log.Fatal("Could Create Record ..")
-	//}
-	////db.CreateTable()
-	//var user User
-
+	db.DropTableIfExists(User{},Host{})
 }
