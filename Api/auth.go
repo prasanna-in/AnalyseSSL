@@ -51,7 +51,20 @@ func logoutHandler(jar *sessions.CookieStore) http.Handler {
 
 	})
 }
+
+func createUserHandler(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
+	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+		req.ParseForm()
+		var u DB.User
+		u.Username = req.Form.Get("username")
+		u.Password= req.Form.Get("password")
+		u.Access=req.Form.Get("access")
+		db.CreateUser(u)
+	})
+}
+
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore,db DB.DbManager)  {
 	m.Handle("/api/auth/login",loginHandler(jar,db))
 	m.Handle("/api/auth/logout",logoutHandler(jar)).Methods(http.MethodGet)
+	m.Handle("/api/auth/createuser",createUserHandler(jar,db)).Methods(http.MethodPost)
 }
