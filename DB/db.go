@@ -80,6 +80,7 @@ func (db *DB)findByUsername(str string)*User {
 func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
 	//db.CreateTable(User{},Host{})
+	db.CreateTable(Scan{})
 	//user := User{Username:"Admin",Password:"Password",Hosts:[]Host{{Hostname:"google.com"},{Hostname:"Yahoo.com"}}}
 	//host := Host{}
 	//user2:=User{Username:"Admin",Password:"Password",Hosts:Host{Hostname:"Https://Yahoo.com"}}
@@ -96,6 +97,12 @@ func Setup(db *DB) {
 	//	UserID:u.ID,
 	//}
 	//db.Create(&host)
+	host :=db.findHostbyID(1)
+	scan :=Scan{
+		Result:"This is Test",
+		HostID:host.ID,
+	}
+	db.Create(&scan)
 
 
 }
