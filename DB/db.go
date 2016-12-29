@@ -86,6 +86,10 @@ func (db *DB ) CreateUser(u User) error  {
 	e :=db.Create(&u).Error
 	return e
 }
+func (db *DB ) CreateHost(h Host) error {
+	e:= db.Create(&h).Error
+	return e
+}
 
 
 //***********

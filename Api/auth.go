@@ -54,6 +54,9 @@ func logoutHandler(jar *sessions.CookieStore) http.Handler {
 
 func createUserHandler(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+		if !IsUserLoggedin(req,resp,jar){
+			http.Redirect(resp,req,"/public/login.html",http.StatusTemporaryRedirect)
+		}
 		req.ParseForm()
 		var u DB.User
 		u.Username = req.Form.Get("username")

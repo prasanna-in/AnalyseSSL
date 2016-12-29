@@ -10,4 +10,5 @@ type DbManager interface {
 	GetScans(uint)[]Scan
 	GetScan(uint) *Scan
 	CreateUser(User)error
+	CreateHost(Host)error
 }
