@@ -65,7 +65,7 @@ func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
 	//db.CreateTable(User{},Host{})
 	user := User{Username:"Admin",Password:"Password"}
-	db.Save(&user)
+	db.Create(&user)
 	//var h Host
 	var u User
 	//host :=Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
