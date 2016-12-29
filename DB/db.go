@@ -62,8 +62,8 @@ func (db *DB) GetHosts(username string)([]Host){
 }
 
 func Setup(db *DB) {
-	//db.DropTableIfExists(User{},Host{})
-	//db.CreateTable(User{},Host{})
+	db.DropTableIfExists(User{},Host{})
+	db.CreateTable(User{},Host{})
 	user := User{Username:"Admin",Password:"Password"}
 	db.Create(&user)
 	//var h Host
