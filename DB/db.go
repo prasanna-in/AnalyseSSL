@@ -68,9 +68,16 @@ func Setup(db *DB) {
 	//host := Host{}
 	//user2:=User{Username:"Admin",Password:"Password",Hosts:Host{Hostname:"Https://Yahoo.com"}}
 	//db.Create(&user)
-	var u User
-	var h []Host
-	db.First(&u)
-	db.Model(&u).Related(&h)
-	log.Println("PKKK",h)
+	//var u User
+	//var h []Host
+	//db.First(&u)
+	//db.Model(&u).Related(&h)
+	//log.Println("PKKK",h)
+	u := User{}
+	db.Where("Username=?","Admin").First(&u)
+	host := Host{
+		Hostname:"pk.com",
+		UserID:u.ID,
+	}
+	db.Create(&host)
 }
