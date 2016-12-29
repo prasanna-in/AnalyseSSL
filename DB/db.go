@@ -63,22 +63,12 @@ func (db *DB) GetHosts(username string)([]Host){
 
 func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
-	db.CreateTable(User{},Host{})
-//	user := User{Username:"Admin",Password:"Password"}
-	//db.Create(&user)
-	//var h Host
-	//var u User
-	//host :=Host{Hostname:"https://google.com",LastScan:time.Now(),NextScan:time.Now()}
-	//e := db.Create(&host).First(&user).Error
-	//if e != nil{
-	//	log.Fatal(e)
-	//}
-	//db.First(&h)
-	//db.First(&u)
-	//log.Print("PK",h)
-	//log.Print("JK",u)
-	user := User{Username:"Admin",Password:"Password",Hosts:[]Host{{Hostname:"google.com"},{Hostname:"Yahoo.com"}}}
+	//db.CreateTable(User{},Host{})
+	//user := User{Username:"Admin",Password:"Password",Hosts:[]Host{{Hostname:"google.com"},{Hostname:"Yahoo.com"}}}
+	//host := Host{}
 	//user2:=User{Username:"Admin",Password:"Password",Hosts:Host{Hostname:"Https://Yahoo.com"}}
-	db.Create(&user)
-
+	//db.Create(&user)
+	var u User
+	db.First(&u)
+	log.Println(u)
 }
