@@ -90,7 +90,7 @@ func (db *DB)findByUsername(str string)*User {
 	db.Where("Username=?",str).First(&u)
 	return &u
 }
-func (db *DB ) findHostbyID(id int) *Host  {
+func (db *DB ) findHostbyID(id uint) *Host  {
 	var h Host
 	db.Where("ID=?",id).First(&h)
 	return &h
