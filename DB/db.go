@@ -56,11 +56,14 @@ func (db *DB ) Login(username string,password string) *User {
 }
 
 func (db *DB) GetHosts(username string)([]Host){
-	var user User
-	db.Where("Username=?",username).First(&user)
+	user := db.findByUsername(username)
 	var hosts []Host
 	db.Model(&user).Related(&hosts)
 	return hosts
+}
+
+func (db *DB)findByUsername(str string)(u *User) {
+	return db.Where("Username=?",str).First(&u)
 }
 
 func Setup(db *DB) {
