@@ -83,7 +83,7 @@ func (db *DB ) GetScan(scanID uint) *Scan {
 }
 
 
-//**********
+//***********
 
 func (db *DB)findByUsername(str string)*User {
 	var u User
