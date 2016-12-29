@@ -55,6 +55,10 @@ func (db *DB ) Login(username string,password string) *User {
 	return &user
 }
 
+func (db *DB) GetUser(user string) *User {
+	u := db.findByUsername(user)
+	return u
+}
 func (db *DB) GetHosts(username string)([]Host){
 	user := db.findByUsername(username)
 	var hosts []Host
@@ -77,6 +81,27 @@ func (db *DB ) GetScan(scanID int) *Scan {
 	return &scan
 
 }
+
+
+//**********
+
+func (db *DB)findByUsername(str string)*User {
+	var u User
+	db.Where("Username=?",str).First(&u)
+	return &u
+}
+func (db *DB ) findHostbyID(id int) *Host  {
+	var h Host
+	db.Where("ID=?",id).First(&h)
+	return &h
+}
+func (db *DB ) findByScanID(scanID int)  *Scan{
+	var s Scan
+	db.Where("ID=?",scanID).First(&s)
+	return &s
+
+}
+
 
 func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
