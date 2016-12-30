@@ -26,7 +26,6 @@ func loginHandler(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 				ErorrHandlerWithHTTPError(resp,err)
 				session.Values["username"] = Dbuser.Username
 				e := session.Save(req,resp)
-				fmt.Println("Session Saved ....")
 				ErorrHandlerWithHTTPError(resp,e)
 			}
 
