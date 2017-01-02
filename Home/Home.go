@@ -14,6 +14,7 @@ import (
 	//"encoding/csv"
 	//"strconv"
 	"encoding/json"
+	"errors"
 )
 
 const Version  = "4.0.0"
@@ -92,7 +93,7 @@ func performScan(host string) (ScanResult,error) {
 		time.Sleep(5 * time.Second)
 		i++
 		if i <= 300{
-			return ScanResult{},err("Scan Failed ...")
+			return ScanResult{},errors.New("This Failed ..")
 		}
 
 	}
