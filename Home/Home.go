@@ -71,34 +71,31 @@ type ScanResult struct {
 	FREAK bool
 }
 
-func performScan(hosts string) ScanResult {
+func performScan(host string) ScanResult {
 	scanresult := ScanResult{}
 	scanner, err := check.NewAPI(API_NAME,Version)
 	if err != nil{
 		log.Println("Could Not create Scanner ....")
 	}
-	for _, value := range hosts {
-		scanresult := ScanResult{}
-		progress,_ := scanner.Analyze(value)
-		info,_ := progress.Info()
-		log.Println("scanning ... ",info.Host)
-		for {
-			fmt.Println(info.Status)
-			if info.Status ==check.STATUS_ERROR{
-				panic(info.StatusMessage)
-			}
-			if info.Status == check.STATUS_READY{
-				break
-			}
-			time.Sleep(5 * time.Second)
+	progress,_ := scanner.Analyze(host)
+	info,_ := progress.Info()
+	log.Println("scanning ... ",info.Host)
+	for {
+		fmt.Println(info.Status)
+		if info.Status ==check.STATUS_ERROR{
+			panic(info.StatusMessage)
 		}
-		detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
-		details := detailedinfo.Details
-		scanresult.IPAddress = info.Endpoints[0].IPAdress
-		scanresult.Drown = details.DrownVulnerable
-		scanresult.FREAK = details.Freak
-		scanresult.Poodle = details.Poodle
+		if info.Status == check.STATUS_READY{
+			break
+		}
+		time.Sleep(5 * time.Second)
 	}
+	detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
+	details := detailedinfo.Details
+	scanresult.IPAddress = info.Endpoints[0].IPAdress
+	scanresult.Drown = details.DrownVulnerable
+	scanresult.FREAK = details.Freak
+	scanresult.Poodle = details.Poodle
 	return scanresult
 }
 
@@ -113,10 +110,7 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		for _, value := range hosts {
 			scanResult := performScan(value.Hostname)
 			jsonScanResult,_:= json.Marshal(scanResult)
-			err :=db.SaveScan(value.ID,string(jsonScanResult)).Error()
-			if err!=nil{
-				log.Println("Error Saving File ....")
-			}
+			db.SaveScan(value.ID,string(jsonScanResult))
 		}
 
 		//var record []string
