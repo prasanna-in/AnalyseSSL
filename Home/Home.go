@@ -118,6 +118,11 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		}
 		as := performScan(scanHosts)
 		var record []string
+		record = append(record,"IP Address")
+		record = append(record,"Poodle")
+		record = append(record,"FREAK")
+		record = append(record,"Drown")
+		record = append(record,"Heart Bleed")
 		for _, value := range as {
 			record = append(record,value.IPAddress)
 			record= append(record,strconv.FormatBool(value.Poodle))
@@ -129,14 +134,13 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		log.Println("Record : ",fmt.Sprint(record))
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
-		wr.Write([]string{"IPAddress,Poodle,FREAK,DROWN,HeartBleed"})
 		log.Println("Total Hosts : ",totalHosts)
 		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
 			wr.Write(record) // converts array of string to comma seperated values for 1 row.
 		}
 		wr.Flush()
 		resp.Header().Set("Content-Type", "text/csv")
-		resp.Header().Set("Content-Disposition", "attachment;filename=TheCSVFileName.csv")
+		resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
 		resp.Write(b.Bytes())
 
 	})
