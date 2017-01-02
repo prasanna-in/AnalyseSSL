@@ -125,6 +125,7 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 			record= append(record,strconv.FormatBool(value.Drown))
 			record= append(record,strconv.FormatBool(value.HeartBleed))
 		}
+		//Log is being created Properly
 		log.Println("Record : ",fmt.Sprint(record))
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
