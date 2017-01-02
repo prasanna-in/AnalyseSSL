@@ -53,11 +53,19 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		db.CreateHost(host)
 	})
 }
+func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
+	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
+		host := db.GetHost(1)
+		fmt.Fprintln(resp,host)
+	})
+
+}
 
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
 	m.Handle("/host/add/",handleAddHost(jar,db)).Methods(http.MethodPost)
+	m.Handle("/host/scan",handleScan(jar,db))
 }
 
 
