@@ -83,7 +83,7 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		}
 		detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
 		details := detailedinfo.Details
-		fmt.Fprintf(resp,details.DrownVulnerable)
+		fmt.Fprintf(resp,details.HTTPStatusCode)
 
 	})
 
