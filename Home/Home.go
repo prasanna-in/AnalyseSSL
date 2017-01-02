@@ -91,7 +91,7 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
 		details := detailedinfo.Details
 		fmt.Fprintln(resp,fmt.Sprint(info.Endpoints[0]))
-		fmt.Fprintf(resp,fmt.Sprint(details))
+		fmt.Fprintf(resp,fmt.Sprint(details.Cert.Subject))
 
 	})
 
