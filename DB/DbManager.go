@@ -11,4 +11,5 @@ type DbManager interface {
 	GetScan(uint) *Scan
 	CreateUser(User)error
 	CreateHost(Host)error
+	SaveScan(uint,string)error
 }

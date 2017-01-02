@@ -10,9 +10,10 @@ import (
 	"log"
 	check "github.com/AnalyseSSL/Scanner"
 	"time"
-	"bytes"
-	"encoding/csv"
-	"strconv"
+	//"bytes"
+	//"encoding/csv"
+	//"strconv"
+	"encoding/json"
 )
 
 const Version  = "4.0.0"
@@ -70,8 +71,8 @@ type ScanResult struct {
 	FREAK bool
 }
 
-func performScan(hosts []string) []ScanResult {
-	scanresults := []ScanResult{}
+func performScan(hosts string) ScanResult {
+	scanresult := ScanResult{}
 	scanner, err := check.NewAPI(API_NAME,Version)
 	if err != nil{
 		log.Println("Could Not create Scanner ....")
@@ -97,9 +98,8 @@ func performScan(hosts []string) []ScanResult {
 		scanresult.Drown = details.DrownVulnerable
 		scanresult.FREAK = details.Freak
 		scanresult.Poodle = details.Poodle
-		scanresults  = append(scanresults,scanresult)
 	}
-	return scanresults
+	return scanresult
 }
 
 func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
@@ -108,40 +108,37 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 			http.Redirect(resp,req,"/public/login.html",http.StatusSeeOther)
 			return
 		}
-		var totalHosts int = 0
 		user :=Api.GetUser(resp,req,jar)
 		hosts := db.GetHosts(user)
-		scanHosts :=[]string{}
 		for _, value := range hosts {
-			totalHosts++
-			scanHosts = append(scanHosts,value.Hostname)
+			scanResult := performScan(value.Hostname)
+			jsonScanResult,_:= json.Marshal(scanResult)
+			err :=db.SaveScan(value.ID,jsonScanResult).Error()
+			if err!=nil{
+				log.Println("Error Saving File ....")
+			}
 		}
-		as := performScan(scanHosts)
-		var record []string
-		//record = append(record,"IP Address")
-		//record = append(record,"Poodle")
-		//record = append(record,"FREAK")
-		//record = append(record,"Drown")
-		//record = append(record,"Heart Bleed")
-		for _, value := range as {
-			record = append(record,value.IPAddress)
-			record= append(record,strconv.FormatBool(value.Poodle))
-			record= append(record,strconv.FormatBool(value.FREAK))
-			record= append(record,strconv.FormatBool(value.Drown))
-			record= append(record,strconv.FormatBool(value.HeartBleed))
-		}
-		//Log is being created Properly
-		log.Println("Record : ",fmt.Sprint(record))
-		b := &bytes.Buffer{}
-		wr := csv.NewWriter(b)
-		log.Println("Total Hosts : ",totalHosts)
-		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
-			wr.Write(record) // converts array of string to comma seperated values for 1 row.
-		}
-		wr.Flush()
-		resp.Header().Set("Content-Type", "text/csv")
-		resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
-		resp.Write(b.Bytes())
+
+		//var record []string
+		//for _, value := range as {
+		//	record = append(record,value.IPAddress)
+		//	record= append(record,strconv.FormatBool(value.Poodle))
+		//	record= append(record,strconv.FormatBool(value.FREAK))
+		//	record= append(record,strconv.FormatBool(value.Drown))
+		//	record= append(record,strconv.FormatBool(value.HeartBleed))
+		//}
+		////Log is being created Properly
+		//log.Println("Record : ",fmt.Sprint(record))
+		//b := &bytes.Buffer{}
+		//wr := csv.NewWriter(b)
+		//log.Println("Total Hosts : ",totalHosts)
+		//for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
+		//	wr.Write(record) // converts array of string to comma seperated values for 1 row.
+		//}
+		//wr.Flush()
+		//resp.Header().Set("Content-Type", "text/csv")
+		//resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
+		//resp.Write(b.Bytes())
 
 	})
 

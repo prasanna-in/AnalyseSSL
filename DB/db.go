@@ -91,6 +91,15 @@ func (db *DB ) CreateHost(h Host) error {
 	return e
 }
 
+func (db *DB ) SaveScan(hostID uint, result string) error {
+	s := Scan{}
+	s.ScanTime = time.Now()
+	s.HostID = hostID
+	s.Result = result
+	err := db.Create(&s).Error
+	return err
+}
+
 
 //***********
 
