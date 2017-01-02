@@ -113,7 +113,7 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		for _, value := range hosts {
 			scanResult := performScan(value.Hostname)
 			jsonScanResult,_:= json.Marshal(scanResult)
-			err :=db.SaveScan(value.ID,jsonScanResult).Error()
+			err :=db.SaveScan(value.ID,string(jsonScanResult)).Error()
 			if err!=nil{
 				log.Println("Error Saving File ....")
 			}
