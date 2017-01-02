@@ -89,6 +89,10 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 
 }
 
+func save()  {
+	
+}
+
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
