@@ -10,11 +10,11 @@ import (
 	"log"
 	check "github.com/AnalyseSSL/Scanner"
 	"time"
-	//"bytes"
-	//"encoding/csv"
-	//"strconv"
+	"encoding/csv"
 	"encoding/json"
 	"errors"
+	"strconv"
+	"bytes"
 )
 
 const Version  = "4.0.0"
@@ -43,7 +43,31 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		userDB := db.GetUser(user)
 		scans :=db.GetScans(userDB.ID)
-		fmt.Fprintln(resp,scans)
+		var record []string
+		totalHosts :=0
+		for _, value := range scans {
+			totalHosts++
+			var jsval ScanResult
+			json.Unmarshal([]byte(value.Result),&jsval)
+			record = append(record,jsval.IPAddress)
+			record= append(record,strconv.FormatBool(jsval.Poodle))
+			record= append(record,strconv.FormatBool(jsval.FREAK))
+			record= append(record,strconv.FormatBool(jsval.Drown))
+			record= append(record,strconv.FormatBool(jsval.HeartBleed))
+
+		}
+		//Log is being created Properly
+		log.Println("Record : ",fmt.Sprint(record))
+		b := &bytes.Buffer{}
+		wr := csv.NewWriter(b)
+		log.Println("Total Hosts : ",totalHosts)
+		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
+			wr.Write(record) // converts array of string to comma seperated values for 1 row.
+		}
+		wr.Flush()
+		resp.Header().Set("Content-Type", "text/csv")
+		resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
+		resp.Write(b.Bytes())
 	})
 }
 
@@ -122,28 +146,6 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 			jsonScanResult,_:= json.Marshal(scanResult)
 			db.SaveScan(value.ID,string(jsonScanResult))
 		}
-
-		//var record []string
-		//for _, value := range as {
-		//	record = append(record,value.IPAddress)
-		//	record= append(record,strconv.FormatBool(value.Poodle))
-		//	record= append(record,strconv.FormatBool(value.FREAK))
-		//	record= append(record,strconv.FormatBool(value.Drown))
-		//	record= append(record,strconv.FormatBool(value.HeartBleed))
-		//}
-		////Log is being created Properly
-		//log.Println("Record : ",fmt.Sprint(record))
-		//b := &bytes.Buffer{}
-		//wr := csv.NewWriter(b)
-		//log.Println("Total Hosts : ",totalHosts)
-		//for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
-		//	wr.Write(record) // converts array of string to comma seperated values for 1 row.
-		//}
-		//wr.Flush()
-		//resp.Header().Set("Content-Type", "text/csv")
-		//resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
-		//resp.Write(b.Bytes())
-
 	})
 
 }
