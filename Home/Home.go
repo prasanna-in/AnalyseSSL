@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"github.com/AnalyseSSL/DB"
 	"log"
-	check "pkg.re/essentialkaos/sslscan.v4"
+	check "github.com/AnalyseSSL/Scanner"
 	"time"
 )
 
