@@ -92,7 +92,7 @@ func performScan(host string) (ScanResult,error) {
 		time.Sleep(5 * time.Second)
 		i++
 		if i <= 300{
-			return ScanResult{},err.Error()
+			return ScanResult{},err("Scan Failed ...")
 		}
 
 	}
