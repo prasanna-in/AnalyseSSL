@@ -59,6 +59,13 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	})
 }
 
+type ScanResult struct {
+	IPAddress string
+	Poodle bool
+	Drown bool
+	HeartBleed bool
+	FREAK bool
+}
 
 func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
@@ -83,8 +90,8 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		}
 		detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
 		details := detailedinfo.Details
-		fmt.Fprintf(resp,info.Endpoints[0].IPAdress)
-		fmt.Fprintf(resp,fmt.Sprint(details.DrownVulnerable))
+		fmt.Fprintln(resp,fmt.Sprint(info.Endpoints[0]))
+		fmt.Fprintf(resp,fmt.Sprint(details))
 
 	})
 
