@@ -125,13 +125,13 @@ func Setup(db *DB) {
 	//db.First(&u)
 	//db.Model(&u).Related(&h)
 	//log.Println("PKKK",h)
-	//u := User{}
-	//db.Where("Username=?","Admin").First(&u)
-	//host := Host{
-	//	Hostname:"pk.com",
-	//	UserID:u.ID,
-	//}
-	//db.Create(&host)
+	u := User{}
+	db.Where("Username=?","Admin").First(&u)
+	host := Host{
+		Hostname:"https://heroku.com",
+		UserID:u.ID,
+	}
+	db.Create(&host)
 	//host :=db.findHostbyID(1)
 	//scan :=Scan{
 	//	Result:"This is Test",
@@ -139,5 +139,5 @@ func Setup(db *DB) {
 	//}
 	//db.Create(&scan)
 	//
-	db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
+	//db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
 }
