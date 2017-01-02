@@ -10,6 +10,9 @@ import (
 	"log"
 	check "github.com/AnalyseSSL/Scanner"
 	"time"
+	"bytes"
+	"encoding/csv"
+
 )
 
 const Version  = "4.0.0"
@@ -92,6 +95,16 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		details := detailedinfo.Details
 		fmt.Fprintln(resp,fmt.Sprint(info.Endpoints[0]))
 		fmt.Fprintf(resp,fmt.Sprint(details.Cert.Subject))
+		record := []string{"test1", "test2", "test3"}
+		b := &bytes.Buffer{}
+		wr := csv.NewWriter(b)
+		for i := 0; i < 100; i++ { // make a loop for 100 rows just for testing purposes
+			wr.Write(record) // converts array of string to comma seperated values for 1 row.
+		}
+		wr.Flush()
+		resp.Header().Set("Content-Type", "text/csv")
+		resp.Header().Set("Content-Disposition", "attachment;filename=TheCSVFileName.csv")
+		resp.Write(b.Bytes())
 
 	})
 
