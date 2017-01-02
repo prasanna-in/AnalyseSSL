@@ -128,7 +128,8 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		log.Println("Record : ",fmt.Sprint(record))
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
-		for i := 1; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
+		log.Println("Total Hosts : ",totalHosts)
+		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
 			wr.Write(record) // converts array of string to comma seperated values for 1 row.
 		}
 		wr.Flush()
