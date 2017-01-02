@@ -12,6 +12,7 @@ import (
 	"time"
 	"bytes"
 	"encoding/csv"
+	"strconv"
 )
 
 const Version  = "4.0.0"
@@ -114,11 +115,18 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 			totalHosts++
 			scanHosts = append(scanHosts,value.Hostname)
 		}
-		Scanrsults := performScan(scanHosts)
-		record := Scanrsults
+		as := performScan(scanHosts)
+		var record []string
+		for _, value := range as {
+			record = append(record,value.IPAddress)
+			record= append(record,strconv.FormatBool(value.Poodle))
+			record= append(record,strconv.FormatBool(value.FREAK))
+			record= append(record,strconv.FormatBool(value.Drown))
+			record= append(record,strconv.FormatBool(value.HeartBleed))
+		}
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
-		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
+		for i := 1; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
 			wr.Write(record) // converts array of string to comma seperated values for 1 row.
 		}
 		wr.Flush()
