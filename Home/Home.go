@@ -80,6 +80,7 @@ func performScan(hosts []string) []ScanResult {
 		scanresult := ScanResult{}
 		progress,_ := scanner.Analyze(value)
 		info,_ := progress.Info()
+		log.Println("scanning ... ",info.Host)
 		for {
 			fmt.Println(info.Status)
 			if info.Status ==check.STATUS_ERROR{
