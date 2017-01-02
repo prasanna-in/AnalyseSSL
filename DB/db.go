@@ -115,7 +115,7 @@ func (db *DB ) findByScanID(scanID uint)  *Scan{
 func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
 	//db.CreateTable(User{},Host{})
-	db.CreateTable(Scan{})
+	//db.CreateTable(Scan{})
 	//user := User{Username:"Admin",Password:"Password",Hosts:[]Host{{Hostname:"google.com"},{Hostname:"Yahoo.com"}}}
 	//host := Host{}
 	//user2:=User{Username:"Admin",Password:"Password",Hosts:Host{Hostname:"Https://Yahoo.com"}}
@@ -139,5 +139,5 @@ func Setup(db *DB) {
 	//}
 	//db.Create(&scan)
 	//
-	db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"Trip.com"},{Hostname:"Gooli.com"}}})
+	db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
 }

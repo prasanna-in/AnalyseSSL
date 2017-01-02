@@ -12,7 +12,6 @@ import (
 	"time"
 	"bytes"
 	"encoding/csv"
-
 )
 
 const Version  = "4.0.0"
@@ -70,15 +69,15 @@ type ScanResult struct {
 	FREAK bool
 }
 
-func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
-	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
-		host := db.GetHost(9)
-		scanner, err := check.NewAPI(API_NAME,Version)
-		if err != nil{
-			log.Println("Could Not create Scanner ....")
-		}
-		progress,_ := scanner.Analyze(host.Hostname)
-		//var info *check.AnalyzeInfo
+func performScan(hosts []string) []ScanResult {
+	scanresults := []ScanResult{}
+	scanner, err := check.NewAPI(API_NAME,Version)
+	if err != nil{
+		log.Println("Could Not create Scanner ....")
+	}
+	for _, value := range hosts {
+		scanresult := ScanResult{}
+		progress,_ := scanner.Analyze(value)
 		info,_ := progress.Info()
 		for {
 			fmt.Println(info.Status)
@@ -88,17 +87,38 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 			if info.Status == check.STATUS_READY{
 				break
 			}
-			fmt.Println("Sleepting ....")
 			time.Sleep(5 * time.Second)
 		}
 		detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
 		details := detailedinfo.Details
-		//fmt.Fprintln(resp,fmt.Sprint(info.Endpoints[0]))
-		//fmt.Fprintf(resp,fmt.Sprint(details.Cert.Subject))
-		record := []string{"test1", "test2", details.HTTPForwarding}
+		scanresult.IPAddress = info.Endpoints[0].IPAdress
+		scanresult.Drown = details.DrownVulnerable
+		scanresult.FREAK = details.Freak
+		scanresult.Poodle = details.Poodle
+		scanresults  = append(scanresults,scanresult)
+	}
+	return scanresults
+}
+
+func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
+	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
+		if !Api.IsUserLoggedin(req,resp,jar){
+			http.Redirect(resp,req,"/public/login.html",http.StatusSeeOther)
+			return
+		}
+		var totalHosts int = 0
+		user :=Api.GetUser(resp,req,jar)
+		hosts := db.GetHosts(user)
+		scanHosts :=[]string{}
+		for _, value := range hosts {
+			totalHosts++
+			scanHosts = append(scanHosts,value.Hostname)
+		}
+		Scanrsults := performScan(scanHosts)
+		record := Scanrsults
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
-		for i := 0; i < 100; i++ { // make a loop for 100 rows just for testing purposes
+		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
 			wr.Write(record) // converts array of string to comma seperated values for 1 row.
 		}
 		wr.Flush()
@@ -118,7 +138,7 @@ func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
 	m.Handle("/host/add/",handleAddHost(jar,db)).Methods(http.MethodPost)
-	m.Handle("/host/scan",handleScan(jar,db))
+	m.Handle("/hosts/scan",handleScan(jar,db))
 }
 
 
