@@ -118,11 +118,11 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		}
 		as := performScan(scanHosts)
 		var record []string
-		record = append(record,"IP Address")
-		record = append(record,"Poodle")
-		record = append(record,"FREAK")
-		record = append(record,"Drown")
-		record = append(record,"Heart Bleed")
+		//record = append(record,"IP Address")
+		//record = append(record,"Poodle")
+		//record = append(record,"FREAK")
+		//record = append(record,"Drown")
+		//record = append(record,"Heart Bleed")
 		for _, value := range as {
 			record = append(record,value.IPAddress)
 			record= append(record,strconv.FormatBool(value.Poodle))
