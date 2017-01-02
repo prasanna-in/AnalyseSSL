@@ -55,8 +55,8 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 }
 func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
-		host := db.GetHost(1)
-		fmt.Fprintln(resp,host)
+		host := db.GetHost(9)
+		fmt.Fprintln(resp,host.Hostname)
 	})
 
 }
