@@ -40,8 +40,8 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			return
 		}
 		user :=Api.GetUser(resp,req,jar)
-		hosts := db.GetHosts(user)
-		scans := db.GetScans(hosts[0].ID)
+		userDB := db.GetUser(user)
+		scans :=db.GetScans(userDB.ID)
 		fmt.Fprintln(resp,scans)
 	})
 }
@@ -71,7 +71,7 @@ type ScanResult struct {
 	FREAK bool
 }
 
-func performScan(host string) ScanResult {
+func performScan(host string) (ScanResult,error) {
 	scanresult := ScanResult{}
 	scanner, err := check.NewAPI(API_NAME,Version)
 	if err != nil{
@@ -80,6 +80,7 @@ func performScan(host string) ScanResult {
 	progress,_ := scanner.Analyze(host)
 	info,_ := progress.Info()
 	log.Println("scanning ... ",info.Host)
+	i :=0
 	for {
 		fmt.Println(info.Status)
 		if info.Status ==check.STATUS_ERROR{
@@ -89,6 +90,11 @@ func performScan(host string) ScanResult {
 			break
 		}
 		time.Sleep(5 * time.Second)
+		i++
+		if i <= 300{
+			return ScanResult{},err.Error()
+		}
+
 	}
 	detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
 	details := detailedinfo.Details
@@ -96,7 +102,7 @@ func performScan(host string) ScanResult {
 	scanresult.Drown = details.DrownVulnerable
 	scanresult.FREAK = details.Freak
 	scanresult.Poodle = details.Poodle
-	return scanresult
+	return scanresult,nil
 }
 
 func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
@@ -108,7 +114,10 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		user :=Api.GetUser(resp,req,jar)
 		hosts := db.GetHosts(user)
 		for _, value := range hosts {
-			scanResult := performScan(value.Hostname)
+			scanResult, err := performScan(value.Hostname)
+			if err != nil{
+				log.Fatal("Could not get the results for",value.Hostname )
+			}
 			jsonScanResult,_:= json.Marshal(scanResult)
 			db.SaveScan(value.ID,string(jsonScanResult))
 		}
