@@ -95,7 +95,7 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		details := detailedinfo.Details
 		//fmt.Fprintln(resp,fmt.Sprint(info.Endpoints[0]))
 		//fmt.Fprintf(resp,fmt.Sprint(details.Cert.Subject))
-		record := []string{"test1", "test2", details}
+		record := []string{"test1", "test2", details.HTTPForwarding}
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
 		for i := 0; i < 100; i++ { // make a loop for 100 rows just for testing purposes
