@@ -67,7 +67,7 @@ func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		if err != nil{
 			log.Println("Could Not create Scanner ....")
 		}
-		progress,_ := scanner.Analyze(host)
+		progress,_ := scanner.Analyze(host.Hostname)
 		//var info *check.AnalyzeInfo
 		info,_ := progress.Info()
 		for {
