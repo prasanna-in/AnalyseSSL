@@ -41,6 +41,16 @@
 			"ImportPath": "github.com/lib/pq/oid",
 			"Comment": "go1.0-cutoff-136-g5bf1611",
 			"Rev": "5bf161122cd640c2a5a2c1d7fa49ea9befff31dd"
+		},
+		{
+			"ImportPath": "pkg.re/essentialkaos/ek.v5/req",
+			"Comment": "v5.6.0",
+			"Rev": "1c71efbd9d6a5dad9aa2e30a279c5bcfa7769970"
+		},
+		{
+			"ImportPath": "pkg.re/essentialkaos/sslscan.v4",
+			"Comment": "v4.0.0",
+			"Rev": "8b5a4aef10ccee370cc6d0e1908a6d42f4e75d61"
 		}
 	]
 }
