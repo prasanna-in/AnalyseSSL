@@ -137,7 +137,7 @@ func Setup(db *DB) {
 	u := User{}
 	db.Where("Username=?","Admin").First(&u)
 	host := Host{
-		Hostname:"https://github.com.com",
+		Hostname:"https://www.oxigenwallet.com/",
 		UserID:u.ID,
 	}
 	db.Create(&host)
