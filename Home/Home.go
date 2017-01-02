@@ -7,8 +7,13 @@ import (
 	"github.com/AnalyseSSL/Api"
 	"fmt"
 	"github.com/AnalyseSSL/DB"
+	"log"
+	check "pkg.re/essentialkaos/sslscan.v4"
+	"time"
 )
 
+const Version  = "4.0.0"
+const API_NAME  = "SSL_SCANNER"
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -53,10 +58,33 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		db.CreateHost(host)
 	})
 }
+
+
 func handleScan(sess *sessions.CookieStore,db DB.DbManager)http.Handler  {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
 		host := db.GetHost(9)
-		fmt.Fprintln(resp,host.Hostname)
+		scanner, err := check.NewAPI(API_NAME,Version)
+		if err != nil{
+			log.Println("Could Not create Scanner ....")
+		}
+		progress,_ := scanner.Analyze(host)
+		//var info *check.AnalyzeInfo
+		info,_ := progress.Info()
+		for {
+			fmt.Println(info.Status)
+			if info.Status ==check.STATUS_ERROR{
+				panic(info.StatusMessage)
+			}
+			if info.Status == check.STATUS_READY{
+				break
+			}
+			fmt.Println("Sleepting ....")
+			time.Sleep(5 * time.Second)
+		}
+		detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
+		details := detailedinfo.Details
+		fmt.Fprintf(resp,details.DrownVulnerable)
+
 	})
 
 }
