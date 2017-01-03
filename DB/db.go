@@ -134,14 +134,14 @@ func (db *DB)findHostzbyID(id uint) []Host {
 
 func (db *DB)findScanbyHostID(id uint) Scan {
 	var s Scan
-	db.Where("host_id = ?",id).First(&s)
+	db.Where("host_id = ?",id).Last(&s)
 	return s
 
 }
 
 
 
-func Setup(db *DB) Scan{
+func Setup(db *DB) {
 	//db.DropTableIfExists(User{},Host{})
 	//db.CreateTable(User{},Host{})
 	//db.CreateTable(Scan{})
@@ -154,13 +154,13 @@ func Setup(db *DB) Scan{
 	//db.First(&u)
 	//db.Model(&u).Related(&h)
 	//log.Println("PKKK",h)
-	//u := User{}
-	//db.Where("Username=?","Admin").First(&u)
-	//host := Host{
-	//	Hostname:"https://www.oxigenwallet.com/",
-	//	UserID:u.ID,
-	//}
-	//db.Create(&host)
+	u := User{}
+	db.Where("Username=?","Admin2").First(&u)
+	host := Host{
+		Hostname:"ecds.standardchartered.com",
+		UserID:u.ID,
+	}
+	db.Create(&host)
 	////host :=db.findHostbyID(1)
 	//scan :=Scan{
 	//	Result:"This is Test",
@@ -169,7 +169,5 @@ func Setup(db *DB) Scan{
 	//db.Create(&scan)
 	//
 	//db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
-	var s Scan
-	db.Where("host_id = ?").First(&s)
-	return s
+
 }
