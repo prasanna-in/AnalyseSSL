@@ -12,7 +12,6 @@ import (
 	"time"
 	"encoding/csv"
 	"encoding/json"
-	"errors"
 	"strconv"
 	"bytes"
 )
@@ -129,7 +128,6 @@ func performScan(host string) (ScanResult,error) {
 	progress,_ := scanner.Analyze(host)
 	info,_ := progress.Info()
 	log.Println("scanning ... ",info.Host)
-	i :=0
 	for {
 		fmt.Println(info.Status)
 		if info.Status ==check.STATUS_ERROR{
@@ -138,12 +136,7 @@ func performScan(host string) (ScanResult,error) {
 		if info.Status == check.STATUS_READY{
 			break
 		}
-		time.Sleep(5 * time.Second)
-		i++
-		log.Println(i)
-		if i <= 3000{
-			return ScanResult{},errors.New("This Failed ..")
-		}
+		time.Sleep(60 * time.Second)
 
 	}
 	detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
