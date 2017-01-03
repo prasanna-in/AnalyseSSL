@@ -46,16 +46,16 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		var record [][]string
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
-		var header []string
-		record = append(header,"Hostname")
-		record = append(header,"IPAddress")
-		record = append(header,"Poodle")
-		record = append(header,"FREAK")
-		record = append(header,"Drown")
-		record = append(header,"HeartBleed")
-		record = append(header,"Grade")
-		record = append(header,"Poodle TLS")
-		record = append(record,header)
+		//var header []string
+		//record = append(header,"Hostname")
+		//record = append(header,"IPAddress")
+		//record = append(header,"Poodle")
+		//record = append(header,"FREAK")
+		//record = append(header,"Drown")
+		//record = append(header,"HeartBleed")
+		//record = append(header,"Grade")
+		//record = append(header,"Poodle TLS")
+		//record = append(record,header)
 		totalHosts:= 0
 		for _, value := range scans {
 			totalHosts++
