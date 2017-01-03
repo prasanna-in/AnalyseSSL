@@ -46,6 +46,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		var record []string
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
+		wr.UseCRLF = true
 		record = append(record,"Hostname")
 		record = append(record,"IPAddress")
 		record = append(record,"Poodle")
@@ -54,7 +55,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		record = append(record,"HeartBleed")
 		record = append(record,"Grade")
 		record = append(record,"Poodle TLS")
-		record =append(record,"/r")
+		record =append(record,"/r/n")
 
 		wr.Write(record)
 		for _, value := range scans {
@@ -68,7 +69,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,strconv.FormatBool(jsval.HeartBleed))
 			record = append(record,jsval.Grade)
 			record = append(record,strconv.Itoa(jsval.Poodle_TLS))
-			record =append(record,"/r")
+			record =append(record,"/r/n")
 			wr.Write(record)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
