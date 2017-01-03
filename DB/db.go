@@ -156,12 +156,12 @@ func Setup(db *DB) {
 	//log.Println("PKKK",h)
 	u := User{}
 	db.Where("Username=?","Admin2").First(&u)
-	//host := Host{
-	//	Hostname:"ecds.standardchartered.com",
-	//	UserID:u.ID,
-	//}
-	//db.Create(&host)
-	db.Model(&u).Update("password","P@ssw0rd")
+	host := Host{
+		Hostname:"aag.standardchartered.com",
+		UserID:u.ID,
+	}
+	db.Create(&host)
+	//db.Model(&u).Update("password","P@ssw0rd")
 	////host :=db.findHostbyID(1)
 	//scan :=Scan{
 	//	Result:"This is Test",
