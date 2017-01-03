@@ -97,7 +97,13 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			db.CreateHost(host)
 		}
 		if req.Method==http.MethodGet{
-			fmt.Fprint(resp,"Add Host")
+			fmt.Fprint(resp,"<html><body><p>Please Enter Your Hostname that you like to add to the scanner</p>" +
+				"<form action=/host/add method=POST>" +
+				"<input type='text' id='hostname' name='hostname' placeholder='hostname' required autofocus>" +
+				"<button  type='submit' name='_'>Submit</button>" +
+				"</form>" +
+				"</body>" +
+				"</html>")
 		}
 	})
 }
