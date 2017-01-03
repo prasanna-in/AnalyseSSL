@@ -46,30 +46,30 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		var record [][]string
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
-		//var header []string
-		//record = append(header,"Hostname")
-		//record = append(header,"IPAddress")
-		//record = append(header,"Poodle")
-		//record = append(header,"FREAK")
-		//record = append(header,"Drown")
-		//record = append(header,"HeartBleed")
-		//record = append(header,"Grade")
-		//record = append(header,"Poodle TLS")
-		//record = append(record,header)
+		var header []string
+		header = append(header,"Hostname")
+		header = append(header,"IPAddress")
+		header = append(header,"Poodle")
+		header = append(header,"FREAK")
+		header = append(header,"Drown")
+		header = append(header,"HeartBleed")
+		header = append(header,"Grade")
+		header = append(header,"Poodle TLS")
+		record = append(record,header)
 		totalHosts:= 0
 		for _, value := range scans {
 			totalHosts++
 			var jsval ScanResult
 			var scanRecord []string
 			json.Unmarshal([]byte(value.Result),&jsval)
-			record = append(scanRecord,jsval.Hostname)
-			record = append(scanRecord,jsval.IPAddress)
-			record = append(scanRecord,strconv.FormatBool(jsval.Poodle))
-			record = append(scanRecord,strconv.FormatBool(jsval.FREAK))
-			record = append(scanRecord,strconv.FormatBool(jsval.Drown))
-			record = append(scanRecord,strconv.FormatBool(jsval.HeartBleed))
-			record = append(scanRecord,jsval.Grade)
-			record = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
+			scanRecord = append(scanRecord,jsval.Hostname)
+			scanRecord = append(scanRecord,jsval.IPAddress)
+			scanRecord = append(scanRecord,strconv.FormatBool(jsval.Poodle))
+			scanRecord = append(scanRecord,strconv.FormatBool(jsval.FREAK))
+			scanRecord = append(scanRecord,strconv.FormatBool(jsval.Drown))
+			scanRecord = append(scanRecord,strconv.FormatBool(jsval.HeartBleed))
+			scanRecord = append(scanRecord,jsval.Grade)
+			scanRecord = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
 			record = append(record,scanRecord)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
