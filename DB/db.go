@@ -74,7 +74,7 @@ func (db *DB)GetScans(hostID uint) []Scan {
 	//Changed Host get Getting Logic created seprate function ...
 	hosts := db.findHostzbyID(hostID)
 	var scans []Scan
-	var scan Scan
+	var scan *Scan
 	for _, value := range hosts {
 		scan = db.findScanbyHostID(value.ID)
 		scans = append(scans,scan)
