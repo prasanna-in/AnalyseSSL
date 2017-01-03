@@ -28,7 +28,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		j := db.GetHosts(user)
 		resp.Header().Add("Content-Type", "text/html")
-		fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}</style></head><body>Hello %s<br/><a href='/host'>Host</a><br/><a href='/api/auth/logout'>Logout</a></body></html>",user)
+		fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}</style></head><body>Hello %s<br/><a href='/host'>Reports</a><br/><a href='/host/add'>Add Host</a><br/><a href='/api/auth/logout'>Logout</a></body></html>",user)
 		fmt.Fprintln(resp,"</br>")
 		fmt.Fprintln(resp,j)
 		fmt.Fprintln(resp,"</br>")
@@ -86,14 +86,19 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			http.Redirect(resp,req,"/public/login.html",http.StatusTemporaryRedirect)
 			return
 		}
-		req.ParseForm()
-		user := Api.GetUser(resp,req,jar)
-		DbUser := db.GetUser(user)
-		host := DB.Host{
-			Hostname:req.Form.Get("hostname"),
-			UserID:DbUser.ID,
+		if req.Method==http.MethodPost {
+			req.ParseForm()
+			user := Api.GetUser(resp, req, jar)
+			DbUser := db.GetUser(user)
+			host := DB.Host{
+				Hostname:req.Form.Get("hostname"),
+				UserID:DbUser.ID,
+			}
+			db.CreateHost(host)
 		}
-		db.CreateHost(host)
+		if req.Method==http.MethodGet{
+			fmt.Fprint(resp,"Add Host")
+		}
 	})
 }
 
@@ -157,7 +162,7 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 		for _, value := range hosts {
 			scanResult, err := performScan(value.Hostname)
 			if err != nil{
-				log.Fatal("Could not get the results for",value.Hostname )
+				log.Fatal("Could not get the results for ",value.Hostname )
 			}
 			jsonScanResult,_:= json.Marshal(scanResult)
 			db.SaveScan(value.ID,string(jsonScanResult))
@@ -173,7 +178,7 @@ func save()  {
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
-	m.Handle("/host/add/",handleAddHost(jar,db)).Methods(http.MethodPost)
+	m.Handle("/host/add/",handleAddHost(jar,db)).Methods(http.MethodPost,http.MethodGet)
 	m.Handle("/hosts/scan",handleScan(jar,db))
 }
 
