@@ -55,7 +55,6 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		record = append(record,"Grade")
 		record = append(record,"Poodle TLS")
 		wr.Write(record)
-		wr.UseCRLF(true)
 		totalHosts :=0
 		for _, value := range scans {
 			totalHosts++
