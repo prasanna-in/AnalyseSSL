@@ -74,10 +74,15 @@ func (db *DB)GetScans(hostID uint) []Scan {
 	host := db.findHostzbyID(hostID)
 	log.Println("Host Got :",host)
 	var scans []Scan
-	db.Model(&host).Related(&scans)
+	var scan Host
+	for _, value := range host {
+		db.Model(&value).Related(&scan)
+		scans = append(scans,scan)
+	}
+	log.Println("Scans Got :",scans)
 	return scans
-
 }
+
 func (db *DB ) GetScan(scanID uint) *Scan {
 	scan := db.findByScanID(scanID)
 	return scan
@@ -119,11 +124,10 @@ func (db *DB ) findByScanID(scanID uint)  *Scan{
 	var s Scan
 	db.Where("ID=?",scanID).First(&s)
 	return &s
-
 }
-func (db *DB)findHostzbyID(id uint) *Host {
-	var h Host
-	db.Where("User_ID=?",id).First(&h)
+func (db *DB)findHostzbyID(id uint) []Host {
+	var h []Host
+	db.Where("User_ID=?",id).Find(&h)
 	return &h
 }
 
