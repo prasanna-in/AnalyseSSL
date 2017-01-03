@@ -74,7 +74,7 @@ func (db *DB)GetScans(hostID uint) []Scan {
 	host := db.findHostzbyID(hostID)
 	log.Println("Host Got :",host)
 	var scans []Scan
-	var scan Host
+	var scan Scan
 	for _, value := range host {
 		db.Model(&value).Related(&scan)
 		scans = append(scans,scan)
@@ -128,7 +128,7 @@ func (db *DB ) findByScanID(scanID uint)  *Scan{
 func (db *DB)findHostzbyID(id uint) []Host {
 	var h []Host
 	db.Where("User_ID=?",id).Find(&h)
-	return &h
+	return h
 }
 
 
