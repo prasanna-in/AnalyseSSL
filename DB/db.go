@@ -4,7 +4,6 @@ import "github.com/jinzhu/gorm"
 import "log"
 import (
 	_ "github.com/lib/pq"
-
 	"time"
 )
 

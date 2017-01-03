@@ -13,3 +13,4 @@ type DbManager interface {
 	CreateHost(Host)error
 	SaveScan(uint,string)error
 }
+
