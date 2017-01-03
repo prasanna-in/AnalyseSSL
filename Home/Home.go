@@ -47,6 +47,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		var record []string
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
+		record = append(record,"Hostname")
 		record = append(record,"IPAddress")
 		record = append(record,"Poodle")
 		record = append(record,"FREAK")
@@ -55,13 +56,10 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		record = append(record,"Grade")
 		record = append(record,"Poodle TLS")
 		wr.Write(record)
-		totalHosts :=0
 		for _, value := range scans {
-			totalHosts++
-			log.Println("Result : ", value.Result)
 			var jsval ScanResult
 			json.Unmarshal([]byte(value.Result),&jsval)
-			log.Println("IP Address : ", jsval.IPAddress)
+			record = append(record,jsval.Hostname)
 			record = append(record,jsval.IPAddress)
 			record = append(record,strconv.FormatBool(jsval.Poodle))
 			record = append(record,strconv.FormatBool(jsval.FREAK))
@@ -71,9 +69,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,strconv.Itoa(jsval.Poodle_TLS))
 			wr.Write(record)
 		}
-		//Log is being created Properly
 		log.Println("Record : ",fmt.Sprint(record))
-		log.Println("Total Hosts : ",totalHosts)
 		//for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
 		//	wr.Write(record) // converts array of string to comma seperated values for 1 row.
 		//}
@@ -109,6 +105,7 @@ type ScanResult struct {
 	FREAK bool
 	Poodle_TLS int
 	Grade string
+	Hostname string
 }
 
 func performScan(host string) (ScanResult,error) {
@@ -145,6 +142,7 @@ func performScan(host string) (ScanResult,error) {
 	scanresult.Poodle = details.Poodle
 	scanresult.Poodle_TLS = details.PoodleTLS
 	scanresult.Grade = detailedinfo.Grade
+	scanresult.Hostname = host
 	return scanresult,nil
 }
 
