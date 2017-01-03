@@ -79,7 +79,7 @@ func (db *DB)GetScans(hostID uint) []Scan {
 		scan = db.findScanbyHostID(value.ID)
 		scans = append(scans,scan)
 	}
-	log.Println("Scans : ",scans)
+	log.Println("Scans :    ",scans)
 	return scans
 
 }
