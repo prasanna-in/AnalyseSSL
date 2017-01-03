@@ -134,7 +134,7 @@ func (db *DB)findHostzbyID(id uint) []Host {
 
 func (db *DB)findScanbyHostID(id uint) Scan {
 	var s Scan
-	db.Where("host_id = ?").First(&s)
+	db.Where("host_id = ?",id).First(&s)
 	return s
 
 }
