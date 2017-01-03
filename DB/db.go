@@ -76,8 +76,8 @@ func (db *DB)GetScans(hostID uint) []Scan {
 	var scans []Scan
 	var scan Scan
 	for _, value := range hosts {
-		log.Println("111111",value)
 		db.Model(&value).Related(&scan)
+		log.Println("$$$$$: ",scan)
 		scans = append(scans,scan)
 	}
 	log.Println("Scans Got :",scans)
