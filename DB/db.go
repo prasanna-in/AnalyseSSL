@@ -156,7 +156,7 @@ func Setup(db *DB) {
 	u := User{}
 	db.Where("Username=?","Admin2").First(&u)
 	host := Host{
-		Hostname:"securitiesservices.standardchartered.com",
+		Hostname:"sme.standardchartered.com",
 		UserID:u.ID,
 	}
 	db.Create(&host)

@@ -74,9 +74,6 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,scanRecord)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
-		//for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
-		//	wr.WriteAll(record) // converts array of string to comma seperated values for 1 row.
-		//}
 		wr.WriteAll(record)
 		wr.Flush()
 		resp.Header().Set("Content-Type", "text/csv")
