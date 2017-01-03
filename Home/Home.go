@@ -45,6 +45,13 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		scans :=db.GetScans(userDB.ID)
 		log.Println("Logs : ",scans)
 		var record []string
+		record = append(record,"IPAddress")
+		record = append(record,"Poodle")
+		record = append(record,"FREAK")
+		record = append(record,"Drown")
+		record = append(record,"HeartBleed")
+		record = append(record,"Grade")
+		record = append(record,"Poodle TLS")
 		totalHosts :=0
 		for _, value := range scans {
 			totalHosts++
