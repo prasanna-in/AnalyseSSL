@@ -54,6 +54,8 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		record = append(record,"HeartBleed")
 		record = append(record,"Grade")
 		record = append(record,"Poodle TLS")
+		record =append(record,"/r")
+
 		wr.Write(record)
 		for _, value := range scans {
 			var jsval ScanResult
@@ -66,6 +68,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,strconv.FormatBool(jsval.HeartBleed))
 			record = append(record,jsval.Grade)
 			record = append(record,strconv.Itoa(jsval.Poodle_TLS))
+			record =append(record,"/r")
 			wr.Write(record)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
