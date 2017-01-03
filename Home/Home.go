@@ -87,6 +87,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			return
 		}
 		if req.Method==http.MethodPost {
+			log.Println("I am inside Post ADD")
 			req.ParseForm()
 			user := Api.GetUser(resp, req, jar)
 			DbUser := db.GetUser(user)
