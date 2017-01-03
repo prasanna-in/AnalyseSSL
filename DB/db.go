@@ -170,6 +170,6 @@ func Setup(db *DB) Scan{
 	//
 	//db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
 	var s Scan
-	db.Where("Host_ID=?").First(&s)
+	db.Where("host_id = ?").First(&s)
 	return s
 }
