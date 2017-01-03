@@ -131,6 +131,7 @@ func performScan(host string) (ScanResult,error) {
 	scanresult.Drown = details.DrownVulnerable
 	scanresult.FREAK = details.Freak
 	scanresult.Poodle = details.Poodle
+	log.Println("Poodle : ",fmt.Sprint(details.Poodle))
 	return scanresult,nil
 }
 
