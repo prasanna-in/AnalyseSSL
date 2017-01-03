@@ -51,10 +51,11 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			var jsval ScanResult
 			json.Unmarshal([]byte(value.Result),&jsval)
 			record = append(record,jsval.IPAddress)
-			record= append(record,strconv.FormatBool(jsval.Poodle))
-			record= append(record,strconv.FormatBool(jsval.FREAK))
-			record= append(record,strconv.FormatBool(jsval.Drown))
-			record= append(record,strconv.FormatBool(jsval.HeartBleed))
+			log.Println("IP Address : ", jsval.IPAddress)
+			record = append(record,strconv.FormatBool(jsval.Poodle))
+			record = append(record,strconv.FormatBool(jsval.FREAK))
+			record = append(record,strconv.FormatBool(jsval.Drown))
+			record = append(record,strconv.FormatBool(jsval.HeartBleed))
 
 		}
 		//Log is being created Properly
