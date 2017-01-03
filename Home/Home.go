@@ -57,7 +57,8 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,strconv.FormatBool(jsval.FREAK))
 			record = append(record,strconv.FormatBool(jsval.Drown))
 			record = append(record,strconv.FormatBool(jsval.HeartBleed))
-
+			record = append(record,jsval.Grade)
+			record = append(record,strconv.Itoa(jsval.Poodle_TLS))
 		}
 		//Log is being created Properly
 		log.Println("Record : ",fmt.Sprint(record))
@@ -97,6 +98,8 @@ type ScanResult struct {
 	Drown bool
 	HeartBleed bool
 	FREAK bool
+	Poodle_TLS int
+	Grade string
 }
 
 func performScan(host string) (ScanResult,error) {
@@ -131,7 +134,8 @@ func performScan(host string) (ScanResult,error) {
 	scanresult.Drown = details.DrownVulnerable
 	scanresult.FREAK = details.Freak
 	scanresult.Poodle = details.Poodle
-	log.Println("Poodle : ",fmt.Sprint(details.Poodle))
+	scanresult.Poodle_TLS = details.PoodleTLS
+	scanresult.Grade = detailedinfo.Grade
 	return scanresult,nil
 }
 
