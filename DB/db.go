@@ -69,21 +69,19 @@ func (db *DB ) GetHost(id uint) *Host {
 	host := db.findHostbyID(id)
 	return host
 }
+
 func (db *DB)GetScans(hostID uint) []Scan {
 	//Changed Host get Getting Logic created seprate function ...
 	hosts := db.findHostzbyID(hostID)
-	log.Println("Host Got :",hosts)
 	var scans []Scan
 	var scan Scan
 	for _, value := range hosts {
-		log.Println(value.ID)
-		db.Model(&value).Related(&scan)
-		log.Println(value.ID,scan)
-		log.Println("$$$$$: ",scan)
+		scan = db.findScanbyHostID(value.ID)
 		scans = append(scans,scan)
 	}
-	log.Println("Scans Got :",scans)
+	log.Println("Scans : ",scans)
 	return scans
+
 }
 
 func (db *DB ) GetScan(scanID uint) *Scan {
@@ -132,6 +130,13 @@ func (db *DB)findHostzbyID(id uint) []Host {
 	var h []Host
 	db.Where("User_ID=?",id).Find(&h)
 	return h
+}
+
+func (db *DB)findScanbyHostID(id uint)*Scan {
+	var s Scan
+	db.Where("Host_ID=?").First(&s)
+	return s
+
 }
 
 
