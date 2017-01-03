@@ -25,8 +25,8 @@ func main() {
 	muxInstance.Handle("/",http.RedirectHandler("/public/login.html",http.StatusTemporaryRedirect))
 	muxInstance.PathPrefix("/public/").Handler(http.StripPrefix("/public/",http.FileServer(http.Dir("public/"))))
 	muxInstance.HandleFunc("/Setup", func(resp http.ResponseWriter, req *http.Request) {
-		DB.Setup(con)
-		fmt.Fprintln(resp,"Setup Completed....")
+		s := DB.Setup(con)
+		fmt.Fprintln(resp,"Setup Completed....",s)
 	})
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"),context.ClearHandler(http.DefaultServeMux)))
 }
