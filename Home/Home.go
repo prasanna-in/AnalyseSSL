@@ -31,6 +31,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		fmt.Fprintln(resp,"</br>")
 		fmt.Fprintln(resp,j)
 		fmt.Fprintln(resp,"</br>")
+		fmt.Fprintln(resp,"</br>")
 	})
 }
 func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
