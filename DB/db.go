@@ -70,7 +70,7 @@ func (db *DB ) GetHost(id uint) *Host {
 	return host
 }
 
-func (db *DB)GetScans(hostID uint) []Scan {
+func (db *DB)GetScans(hostID uint) []*Scan {
 	//Changed Host get Getting Logic created seprate function ...
 	hosts := db.findHostzbyID(hostID)
 	var scans []*Scan
