@@ -43,6 +43,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		userDB := db.GetUser(user)
 		scans :=db.GetScans(userDB.ID)
+		log.Println("Logs : ",scans)
 		var record []string
 		totalHosts :=0
 		for _, value := range scans {
