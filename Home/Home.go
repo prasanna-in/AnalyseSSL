@@ -185,7 +185,7 @@ func save()  {
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
-	m.Handle("/host/add/",handleAddHost(jar,db)).Methods(http.MethodPost,http.MethodGet)
+	m.Handle("/host/add/",handleAddHost(jar,db))
 	m.Handle("/hosts/scan",handleScan(jar,db))
 }
 
