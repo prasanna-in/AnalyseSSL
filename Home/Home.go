@@ -55,6 +55,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		record = append(record,"Grade")
 		record = append(record,"Poodle TLS")
 		wr.Write(record)
+		wr.UseCRLF(true)
 		totalHosts :=0
 		for _, value := range scans {
 			totalHosts++
@@ -69,13 +70,14 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,strconv.FormatBool(jsval.HeartBleed))
 			record = append(record,jsval.Grade)
 			record = append(record,strconv.Itoa(jsval.Poodle_TLS))
+			wr.Write(record)
 		}
 		//Log is being created Properly
 		log.Println("Record : ",fmt.Sprint(record))
 		log.Println("Total Hosts : ",totalHosts)
-		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
-			wr.Write(record) // converts array of string to comma seperated values for 1 row.
-		}
+		//for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
+		//	wr.Write(record) // converts array of string to comma seperated values for 1 row.
+		//}
 		wr.Flush()
 		resp.Header().Set("Content-Type", "text/csv")
 		resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
