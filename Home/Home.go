@@ -45,6 +45,8 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		scans :=db.GetScans(userDB.ID)
 		log.Println("Logs : ",scans)
 		var record []string
+		b := &bytes.Buffer{}
+		wr := csv.NewWriter(b)
 		record = append(record,"IPAddress")
 		record = append(record,"Poodle")
 		record = append(record,"FREAK")
@@ -52,6 +54,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		record = append(record,"HeartBleed")
 		record = append(record,"Grade")
 		record = append(record,"Poodle TLS")
+		wr.Write(record)
 		totalHosts :=0
 		for _, value := range scans {
 			totalHosts++
@@ -69,8 +72,6 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		}
 		//Log is being created Properly
 		log.Println("Record : ",fmt.Sprint(record))
-		b := &bytes.Buffer{}
-		wr := csv.NewWriter(b)
 		log.Println("Total Hosts : ",totalHosts)
 		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
 			wr.Write(record) // converts array of string to comma seperated values for 1 row.
