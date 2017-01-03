@@ -47,18 +47,18 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		b := &bytes.Buffer{}
 		wr := csv.NewWriter(b)
 		wr.UseCRLF = true
-		record = append(record,"Hostname")
-		record = append(record,"IPAddress")
-		record = append(record,"Poodle")
-		record = append(record,"FREAK")
-		record = append(record,"Drown")
-		record = append(record,"HeartBleed")
-		record = append(record,"Grade")
-		record = append(record,"Poodle TLS")
-		record =append(record,"/r/n")
-
-		wr.Write(record)
+		//record = append(record,"Hostname")
+		//record = append(record,"IPAddress")
+		//record = append(record,"Poodle")
+		//record = append(record,"FREAK")
+		//record = append(record,"Drown")
+		//record = append(record,"HeartBleed")
+		//record = append(record,"Grade")
+		//record = append(record,"Poodle TLS")
+		//wr.Write(record)
+		totalHosts:= 0
 		for _, value := range scans {
+			totalHosts++
 			var jsval ScanResult
 			json.Unmarshal([]byte(value.Result),&jsval)
 			record = append(record,jsval.Hostname)
@@ -69,13 +69,11 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			record = append(record,strconv.FormatBool(jsval.HeartBleed))
 			record = append(record,jsval.Grade)
 			record = append(record,strconv.Itoa(jsval.Poodle_TLS))
-			record =append(record,"/r/n")
-			wr.Write(record)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
-		//for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
-		//	wr.Write(record) // converts array of string to comma seperated values for 1 row.
-		//}
+		for i := 0; i < totalHosts; i++ { // make a loop for 100 rows just for testing purposes
+			wr.Write(record) // converts array of string to comma seperated values for 1 row.
+		}
 		wr.Flush()
 		resp.Header().Set("Content-Type", "text/csv")
 		resp.Header().Set("Content-Disposition", "attachment;filename="+user+".csv")
