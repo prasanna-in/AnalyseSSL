@@ -48,9 +48,9 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		totalHosts :=0
 		for _, value := range scans {
 			totalHosts++
+			log.Println("Result : ", value.Result)
 			var jsval ScanResult
 			json.Unmarshal([]byte(value.Result),&jsval)
-			record = append(record,jsval.IPAddress)
 			log.Println("IP Address : ", jsval.IPAddress)
 			record = append(record,strconv.FormatBool(jsval.Poodle))
 			record = append(record,strconv.FormatBool(jsval.FREAK))
