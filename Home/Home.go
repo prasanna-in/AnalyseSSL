@@ -27,7 +27,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		j := db.GetHosts(user)
 		resp.Header().Add("Content-Type", "text/html")
-		fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}</style></head><body>Hello %s<br/><p>{{time.now}}</p><a href='/host'>Reports</a><br/><a href='/host/add'>Add Host</a><br/><a href='/api/auth/logout'>Logout</a></body></html>",user)
+		fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}</style></head><body>Hello %s<br/><p>{{.time.now()}}</p><a href='/host'>Reports</a><br/><a href='/host/add'>Add Host</a><br/><a href='/api/auth/logout'>Logout</a></body></html>",user)
 		fmt.Fprintln(resp,"</br>")
 		fmt.Fprintln(resp,j)
 		fmt.Fprintln(resp,"</br>")
