@@ -136,6 +136,7 @@ func performScan(host string) (ScanResult,error) {
 		fmt.Println(info.Status)
 		fmt.Println(info.Endpoints[0].Progress)
 		fmt.Println(info.Endpoints[0].StatusDetailsMessage)
+		fmt.Println(info.Endpoints[0].IPAdress)
 		if info.Status ==check.STATUS_ERROR{
 			panic(info.StatusMessage)
 		}
