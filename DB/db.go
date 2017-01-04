@@ -174,6 +174,6 @@ func Setup(db *DB) {
 	//db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
 	resp,_:=http.Get("https://api.ssllabs.com/api/v2/info")
 	body,_ :=ioutil.ReadAll(resp.Body)
-	log.Println(body)
+	log.Println(string(body))
 
 }
