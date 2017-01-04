@@ -14,6 +14,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"bytes"
+	"html/template"
 )
 
 const Version  = "4.0.0"
@@ -184,13 +185,21 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 	})
 
 }
-
+func handletest() http.Handler {
+	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
+		name:= "pk"
+		temp := template.New("Junk")
+		temp.Parse("<div>{{.name}}</div")
+		temp.Execute(resp,name)
+	})
+}
 
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
 	m.Handle("/home",handleHome(jar, db))
 	m.Handle("/host",handleHost(jar,db))
 	m.Handle("/host/add/",handleAddHost(jar,db))
 	m.Handle("/hosts/scan",handleScan(jar,db))
+	m.Handle("/test",handletest)
 }
 
 
