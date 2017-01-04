@@ -5,9 +5,7 @@ import "log"
 import (
 	_ "github.com/lib/pq"
 	"time"
-	"net/http"
 
-	"io/ioutil"
 )
 
 
@@ -156,13 +154,13 @@ func Setup(db *DB) {
 	//db.First(&u)
 	//db.Model(&u).Related(&h)
 	//log.Println("PKKK",h)
-	//u := User{}
-	//db.Where("Username=?","Admin2").First(&u)
-	//host := Host{
-	//	Hostname:"sme.standardchartered.com",
-	//	UserID:u.ID,
-	//}
-	//db.Create(&host)
+	u := User{}
+	db.Where("Username=?","Admin2").First(&u)
+	host := Host{
+		Hostname:"infoatwork.standardchartered.com",
+		UserID:u.ID,
+	}
+	db.Create(&host)
 	//db.Model(&u).Update("password","P@ssw0rd")
 	////host :=db.findHostbyID(1)
 	//scan :=Scan{
@@ -172,8 +170,8 @@ func Setup(db *DB) {
 	//db.Create(&scan)
 	//
 	//db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
-	resp,_:=http.Get("https://api.ssllabs.com/api/v2/info")
-	body,_ :=ioutil.ReadAll(resp.Body)
-	log.Println(string(body))
+	//resp,_:=http.Get("https://api.ssllabs.com/api/v2/info")
+	//body,_ :=ioutil.ReadAll(resp.Body)
+	//log.Println(string(body))
 
 }
