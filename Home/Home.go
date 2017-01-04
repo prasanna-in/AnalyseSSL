@@ -146,7 +146,7 @@ func performScan(host string) (ScanResult,error) {
 		}
 		i++
 		fmt.Println(i)
-		if i == 401{
+		if i == 10{
 			break
 		}
 		time.Sleep(60 * time.Second)
