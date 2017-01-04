@@ -20,6 +20,7 @@ import (
 	"runtime"
 	"strings"
 	"time"
+	"log"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -204,6 +205,7 @@ func (e *Engine) Do(r Request) (*Response, error) {
 
 // Get send GET request and process response
 func (e *Engine) Get(r Request) (*Response, error) {
+	log.Println("Request :",r)
 	return e.doRequest(r, GET)
 }
 

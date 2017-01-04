@@ -428,16 +428,20 @@ func (api *API) Analyze(host string, params ...AnalyzeParams) (*AnalyzeProgress,
 	return progress, nil
 }
 
+
 // Info return short info
 func (ap *AnalyzeProgress) Info() (*AnalyzeInfo, error) {
+
 	resp, err := ap.engine.Get(req.Request{
 		URL:   _API_URL_ANALYZE,
 		Query: req.Query{"host": ap.host},
 	})
 
+
 	if err != nil {
 		return nil, err
 	}
+
 
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("API return HTTP code %d", resp.StatusCode)
@@ -464,6 +468,7 @@ func (ap *AnalyzeProgress) DetailedInfo(ip string) (*EndpointInfo, error) {
 			return nil, fmt.Errorf("Retrieving detailed information possible only with status READY")
 		}
 	}
+
 
 	resp, err := ap.engine.Get(req.Request{
 		URL:   _API_URL_DETAILED,
