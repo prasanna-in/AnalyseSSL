@@ -6,6 +6,8 @@ import (
 	_ "github.com/lib/pq"
 	"time"
 	"net/http"
+
+	"io/ioutil"
 )
 
 
@@ -171,6 +173,7 @@ func Setup(db *DB) {
 	//
 	//db.CreateUser(User{Username:"Admin2",Password:"Password",Hosts:[]Host{{Hostname:"https://heroku.com"},{Hostname:"https://google.com"}}})
 	resp,_:=http.Get("https://api.ssllabs.com/api/v2/info")
-	log.Println(resp.Body)
+	body,_ :=ioutil.ReadAll(resp.Body)
+	log.Println(body)
 
 }
