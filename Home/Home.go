@@ -185,7 +185,7 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 	})
 
 }
-func handletest() http.Handler {
+func handletest(jar *sessions.CookieStore) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
 		name:= "pk"
 		temp := template.New("Junk")
@@ -199,7 +199,7 @@ func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  
 	m.Handle("/host",handleHost(jar,db))
 	m.Handle("/host/add/",handleAddHost(jar,db))
 	m.Handle("/hosts/scan",handleScan(jar,db))
-	m.Handle("/test",handletest)
+	m.Handle("/test",handletest(jar))
 }
 
 
