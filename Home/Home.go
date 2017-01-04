@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"github.com/AnalyseSSL/DB"
 	"log"
-	check "github.com/AnalyseSSL/Scanner"
+	 check "github.com/AnalyseSSL/Scanner"
 	"time"
 	"encoding/csv"
 	"encoding/json"
