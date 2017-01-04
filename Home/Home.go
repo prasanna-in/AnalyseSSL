@@ -145,12 +145,12 @@ func performScan(host string) (ScanResult,error) {
 		if info.Status == check.STATUS_READY{
 			break
 		}
-		i++
-		fmt.Println(i)
+
 		if i == 10{
 			break
 		}
 		time.Sleep(60 * time.Second)
+		i++
 
 
 	}
@@ -189,7 +189,7 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
 		name:= "pk"
 		temp := template.New("Junk")
-		temp.Parse("<div>{{.name}}</div")
+		temp.Parse("<html><body><p>{{.name}}</p></body></html>")
 		temp.Execute(resp,name)
 	})
 }
