@@ -133,6 +133,8 @@ func performScan(host string) (ScanResult,error) {
 	log.Println("scanning ... ",info.Host)
 	for {
 		fmt.Println(info.Status)
+		fmt.Println(info.Endpoints[0].Progress)
+		fmt.Println(info.Endpoints[0].StatusMessage)
 		if info.Status ==check.STATUS_ERROR{
 			panic(info.StatusMessage)
 		}
