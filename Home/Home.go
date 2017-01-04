@@ -132,6 +132,7 @@ func performScan(host string) (ScanResult,error) {
 	progress,_ := scanner.Analyze(host)
 	info,_ := progress.Info()
 	log.Println("scanning ... ",info.Host)
+	i := 0
 	for {
 		fmt.Println(info.Status)
 		fmt.Println(info.Endpoints[0].Progress)
@@ -144,6 +145,11 @@ func performScan(host string) (ScanResult,error) {
 			break
 		}
 		time.Sleep(60 * time.Second)
+		i++
+		fmt.Println(i)
+		if i == 400{
+			break
+		}
 
 	}
 	detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
