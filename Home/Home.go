@@ -187,10 +187,9 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 }
 func handletest(jar *sessions.CookieStore) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
-		name:= "pk"
 		temp := template.New("Junk")
-		temp.Parse("<html><body><p>{{.name}}</p></body></html>")
-		temp.Execute(resp,name)
+		temp.Parse("<html><body><p>{{.}}</p></body></html>")
+		temp.Execute(resp,"PK")
 	})
 }
 
