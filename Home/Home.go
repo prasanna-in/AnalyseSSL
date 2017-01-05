@@ -226,11 +226,12 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 			"</ul></body></html>")
 		temp.Execute(resp,[]int{1,2,3})
 
-		//temp,err:=template.ParseFiles("home.html")
-		//if err !=nil{
-		//	log.Println(err.Error())
-		//}
+		temp,err:=template.ParseFiles("/home/home.html")
+		if err !=nil{
+			log.Println(err.Error())
+		}
 		//temp.ExecuteTemplate(resp,"home.html",[]string{"'","<"})
+		temp.Execute(resp,[]int{1,2,3,4,5})
 
 	})
 }
