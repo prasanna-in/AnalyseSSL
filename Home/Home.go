@@ -241,7 +241,7 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 		fmt.Println("WD",dir)
 		temp,err:=template.ParseFiles("public/home.html")
 		if err !=nil{
-			log.Println(err.Error())
+			log.Println("Temp Error",err.Error())
 		}
 		//temp.ExecuteTemplate(resp,"home.html",[]string{"'","<"})
 		temp.Execute(resp,[]int{1,2,3,4,5})
