@@ -193,7 +193,7 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 			"<li>{{.}}</li>" +
 			"{{end}}" +
 			"</ul></body></html>")
-		temp.Execute(resp,[]int{1,2,3,4,5})
+		temp.Execute(resp,[]string{"'","<"})
 	})
 }
 
