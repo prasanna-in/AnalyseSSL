@@ -40,11 +40,12 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		//	"<br/><a href='/api/auth/logout'>Logout</a></body></html>",user)\\
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
-			"{{range .}}" +
+			"<p>The Hosts you Have are </p>" +
+			"{{range . Hostname}}" +
 			"<li>{{.}}</li>" +
 			"{{end}}" +
 			"</ul></body></html>"))
-		temp.Execute(resp,[]int{1,2,3,4})
+		temp.Execute(resp,j)
 		//fmt.Fprintln(resp,"</br>")
 		//fmt.Fprintln(resp,j)
 		//fmt.Fprintln(resp,"</br>")
