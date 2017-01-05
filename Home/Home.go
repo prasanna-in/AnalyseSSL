@@ -15,7 +15,6 @@ import (
 	"strconv"
 	"bytes"
 	"html/template"
-	"os"
 )
 
 const Version  = "4.0.0"
@@ -230,15 +229,6 @@ func handleScan(jar *sessions.CookieStore,db DB.DbManager)http.Handler  {
 }
 func handletest(jar *sessions.CookieStore) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
-		temp := template.New("Junk")
-		temp.Parse("<html><body><ul>" +
-			"{{range .}}" +
-			"<li>{{.}}</li>" +
-			"{{end}}" +
-			"</ul></body></html>")
-		temp.Execute(resp,[]int{1,2,3})
-		dir,_:=os.Getwd()
-		fmt.Println("WD",dir)
 		temp,err:=template.ParseFiles("public/home.html")
 		if err !=nil{
 			log.Println("Temp Error",err.Error())
