@@ -46,7 +46,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			x.Host = value
 			x.Scan = db.GetScan(value.ID)
 			y := JsonfromStr(x.Scan.Result)
-			x.Grade = y
+			x.Grade = y.Grade
 			z = append(z,x)
 		}
 		fmt.Println(z)
