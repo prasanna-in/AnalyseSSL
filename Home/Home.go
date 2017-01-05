@@ -41,7 +41,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			x.Scan = db.GetScan(value.ID)
 			z = append(z,x)
 		}
-		fmt.Println(j[0].ID)
+		fmt.Println(z)
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
 			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
