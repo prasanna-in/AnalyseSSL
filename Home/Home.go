@@ -20,10 +20,10 @@ import (
 const Version  = "4.0.0"
 const API_NAME  = "SSL_SCANNER"
 //
-//type HomeHandle struct {
-//	Host DB.Host
-//	Scan DB.Scan
-//}
+type HomeHandle struct {
+	Host DB.Host
+	Scan DB.Scan
+}
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -31,23 +31,13 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			return
 		}
 		user :=Api.GetUser(resp,req,jar)
-		z := []struct{
-			DB.Host
-			DB.Scan
-		}{}
+		z := []HomeHandle{}
 		j := db.GetHosts(user)
 		for _, value := range j {
-			//var x HomeHandle
-			//x.Host = value
-			//x.Scan = db.GetScan(value.ID)
-			stru :=[]struct{
-				host DB.Host
-				scan DB.Scan
-			}{
-				value,
-				db.GetScan(value.ID),
-			}
-			z = append(z,stru)
+			var x HomeHandle
+			x.Host = value
+			x.Scan = db.GetScan(value.ID)
+			z = append(z,x)
 
 
 		}
