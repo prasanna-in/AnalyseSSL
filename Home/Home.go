@@ -15,6 +15,7 @@ import (
 	"strconv"
 	"bytes"
 	"html/template"
+	"os"
 )
 
 const Version  = "4.0.0"
@@ -236,8 +237,8 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 			"{{end}}" +
 			"</ul></body></html>")
 		temp.Execute(resp,[]int{1,2,3})
-
-		temp,err:=template.ParseFiles("/public/home.html")
+		fmt.Println("WD",os.Getwd())
+		temp,err:=template.ParseFiles("public/home.html")
 		if err !=nil{
 			log.Println(err.Error())
 		}
