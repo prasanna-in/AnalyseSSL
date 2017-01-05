@@ -191,7 +191,7 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 		temp.Parse("<html><body><ul>" +
 			"{{range .}}" +
 			"{{end}}" +
-			"<//ul></body></html>")
+			"</ul></body></html>")
 		temp.Execute(resp,[]int{1,2,3,4,5})
 	})
 }
