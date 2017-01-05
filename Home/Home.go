@@ -26,8 +26,10 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			return
 		}
 		user :=Api.GetUser(resp,req,jar)
+		userDB := db.GetUser(user)
+		scans :=db.GetScans(userDB.ID)
 		j := db.GetHosts(user)
-		fmt.Println(j[0].Hostname)
+		fmt.Println(j[0])
 		//resp.Header().Add("Content-Type", "text/html")
 		//fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" +
 		//	"</style></head><body>Hello %s<br/><ul>" +
@@ -43,6 +45,10 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
 			"<p>The Hosts you Have are </p>" +
 			"<table>" +
+			"<th>Host</th>" +
+			"<th>Rating</th>" +
+			"<th>Last Scan Date</th>" +
+			"</th>" +
 			"{{range .}}" +
 			"<tr>" +
 			"<td>" +
