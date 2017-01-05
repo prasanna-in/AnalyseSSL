@@ -198,7 +198,7 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 		if err !=nil{
 			log.Println(err.Error())
 		}
-		temp.Execute(resp,[]string{"'","<"})
+		temp.ExecuteTemplate(resp,"home.html",[]string{"'","<"})
 	})
 }
 
