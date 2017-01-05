@@ -40,6 +40,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		//	"<br/><a href='/api/auth/logout'>Logout</a></body></html>",user)\\
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
+			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
 			"<p>The Hosts you Have are </p>" +
 			"{{range .}}" +
 			"<p>{{.Hostname}}</p>" +
