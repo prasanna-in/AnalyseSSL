@@ -42,10 +42,11 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		temp.Parse(("<html><body><ul>" +
 			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
 			"<p>The Hosts you Have are </p>" +
+			"<table>" +
 			"{{range .}}" +
-			"<p>{{.Hostname}}</p>" +
+			"<tr>{{.Hostname}}</tr>" +
 			"{{end}}" +
-			"</ul></body></html>"))
+			"</table></body></html>"))
 		temp.Execute(resp,j)
 		//fmt.Fprintln(resp,"</br>")
 		//fmt.Fprintln(resp,j)
