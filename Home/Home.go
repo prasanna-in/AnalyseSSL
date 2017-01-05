@@ -19,6 +19,8 @@ import (
 
 const Version  = "4.0.0"
 const API_NAME  = "SSL_SCANNER"
+
+
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -29,17 +31,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		//userDB := db.GetUser(user)
 		//scans :=db.GetScans(userDB.ID)
 		j := db.GetHosts(user)
-		fmt.Println(j[0])
-		//resp.Header().Add("Content-Type", "text/html")
-		//fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" +
-		//	"</style></head><body>Hello %s<br/><ul>" +
-		//	"{{range .}}" +
-		//	"<li>{{. }}</li>" +
-		//
-		//	"</ul>" +
-		//	"<a href='/host'>Reports</a><br/>" +
-		//	"<a href='/host/add'>Add Host</a>" +
-		//	"<br/><a href='/api/auth/logout'>Logout</a></body></html>",user)\\
+		fmt.Println(j[0].ID)
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
 			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
@@ -51,22 +43,19 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"</th>" +
 			"{{range .}}" +
 			"<tr>" +
-			"<td>" +
-			"{{.Hostname}}" +
-			"</td>" +
+			"<td>" + "{{.Hostname}}" + "</td>" +
+			"<td>" +""+"</td>"+
 			"</tr>" +
 			"{{end}}" +
 			"</table>" +
 			"<table>" +
+			"<br/>" +
+			"<br/>" +
 			"<th><a href='/host'>Reports</a></th>" +
-			"<th><a href='/host/add'>Add Host</a></th>" +
+			//"<th><a href='/host/add'>Add Host</a></th>" +
 			"<th><a href='/api/auth/logout'>Logout</a></th>" +
 			"</body></html>"))
 		temp.Execute(resp,j)
-		//fmt.Fprintln(resp,"</br>")
-		//fmt.Fprintln(resp,j)
-		//fmt.Fprintln(resp,"</br>")
-		//fmt.Fprintln(resp,"</br>")
 	})
 }
 func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {

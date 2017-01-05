@@ -8,7 +8,7 @@ type DbManager interface {
 	GetHosts(string) ([]Host)
 	GetHost(uint) *Host
 	GetScans(uint)[]Scan
-	GetScan(uint) *Scan
+	GetScan(uint) Scan
 	CreateUser(User)error
 	CreateHost(Host)error
 	SaveScan(uint,string)error

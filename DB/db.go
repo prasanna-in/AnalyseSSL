@@ -84,10 +84,9 @@ func (db *DB)GetScans(hostID uint) []Scan {
 	return scans
 }
 
-func (db *DB ) GetScan(scanID uint) *Scan {
-	scan := db.findByScanID(scanID)
+func (db *DB ) GetScan(scanID uint) Scan {
+	scan := db.findHostbyID(scanID)
 	return scan
-
 }
 
 func (db *DB ) CreateUser(u User) error  {
