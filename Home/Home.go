@@ -20,7 +20,10 @@ import (
 const Version  = "4.0.0"
 const API_NAME  = "SSL_SCANNER"
 
-
+type HomeHandle struct {
+	Host DB.Host
+	Scan DB.Scan
+}
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -30,7 +33,14 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		//userDB := db.GetUser(user)
 		//scans :=db.GetScans(userDB.ID)
+		var z []HomeHandle
 		j := db.GetHosts(user)
+		for _, value := range j {
+			var x HomeHandle
+			x.Host = value
+			x.Scan = db.GetScan(value.ID)
+			z = append(z,x)
+		}
 		fmt.Println(j[0].ID)
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
@@ -44,7 +54,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"{{range .}}" +
 			"<tr>" +
 			"<td>" + "{{.Hostname}}" + "</td>" +
-			"<td>" +""+"</td>"+
+			"<td>" +"{{.ScanTime}}"+"</td>"+
 			"</tr>" +
 			"{{end}}" +
 			"</table>" +
@@ -55,7 +65,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			//"<th><a href='/host/add'>Add Host</a></th>" +
 			"<th><a href='/api/auth/logout'>Logout</a></th>" +
 			"</body></html>"))
-		temp.Execute(resp,j)
+		temp.Execute(resp,z)
 	})
 }
 func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {

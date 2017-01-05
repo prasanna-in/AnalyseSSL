@@ -85,7 +85,7 @@ func (db *DB)GetScans(hostID uint) []Scan {
 }
 
 func (db *DB ) GetScan(scanID uint) Scan {
-	scan := db.findHostbyID(scanID)
+	scan := db.findScanbyHostID(scanID)
 	return scan
 }
 
