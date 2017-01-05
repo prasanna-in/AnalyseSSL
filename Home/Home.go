@@ -52,7 +52,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		fmt.Println(z)
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
-			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
+			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;} td {border: 1px solid;}" + "</style>" +
 			"<h1>Snapshot view of your hosts ... </h1>" +
 			"<table>" +
 			"<th>Host</th>" +
@@ -62,6 +62,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"{{range .}}" +
 			"<tr>" +
 			"<td>" + "{{.Host.Hostname}}" + "</td>" +
+
 			"<td>" +"{{.Scan.ScanTime}}"+"</td>" +
 			"<td>{{.Grade}}</td>"+
 			"</tr>" +
