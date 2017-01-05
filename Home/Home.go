@@ -31,15 +31,20 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			return
 		}
 		user :=Api.GetUser(resp,req,jar)
-		//userDB := db.GetUser(user)
-		//scans :=db.GetScans(userDB.ID)
 		var z []HomeHandle
 		j := db.GetHosts(user)
 		for _, value := range j {
-			var x HomeHandle
-			x.Host = value
-			x.Scan = db.GetScan(value.ID)
-			z = append(z,x)
+			//var x HomeHandle
+			//x.Host = value
+			//x.Scan = db.GetScan(value.ID)
+			stru :=struct{
+				host DB.Host
+				scan DB.Scan
+			}{
+				value,
+				db.GetScan(value.ID),
+			}
+			z = append(z,stru)
 		}
 		fmt.Println(z)
 		temp := template.New("Checkmmm")
