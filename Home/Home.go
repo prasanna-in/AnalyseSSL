@@ -23,7 +23,15 @@ const API_NAME  = "SSL_SCANNER"
 type HomeHandle struct {
 	Host DB.Host
 	Scan DB.Scan
+	Grade string
 }
+
+func JsonfromStr(jsonstr string) ScanResult  {
+	var jsval ScanResult
+	json.Unmarshal([]byte(jsonstr),&jsval)
+	return jsval
+}
+
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -37,23 +45,25 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			var x HomeHandle
 			x.Host = value
 			x.Scan = db.GetScan(value.ID)
+			y := JsonfromStr(x.Scan.Result)
+			x.Grade = y
 			z = append(z,x)
-
-
 		}
 		fmt.Println(z)
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
 			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" + "</style>" +
-			"<p>The Hosts you Have are </p>" +
+			"<h1>Snapshot view of your hosts ... </h1>" +
 			"<table>" +
 			"<th>Host</th>" +
 			"<th>Last Scan Date</th>" +
+			"<th>Grade</th>" +
 			"</th>" +
 			"{{range .}}" +
 			"<tr>" +
 			"<td>" + "{{.Host.Hostname}}" + "</td>" +
-			"<td>" +"{{.Scan.ScanTime}}"+"</td>"+
+			"<td>" +"{{.Scan.ScanTime}}"+"</td>" +
+			"<td>{{.Grade}}</td>"+
 			"</tr>" +
 			"{{end}}" +
 			"</table>" +
