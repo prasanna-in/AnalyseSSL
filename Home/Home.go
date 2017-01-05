@@ -195,7 +195,7 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 		//	"</ul></body></html>")
 		_,err:=temp.ParseFiles("home.html")
 		if err !=nil{
-			log.Println("Parse File Failed ...")
+			log.Println(err.Error())
 		}
 		temp.Execute(resp,[]string{"'","<"})
 	})
