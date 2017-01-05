@@ -48,7 +48,6 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<p>The Hosts you Have are </p>" +
 			"<table>" +
 			"<th>Host</th>" +
-			"<th>Rating</th>" +
 			"<th>Last Scan Date</th>" +
 			"</th>" +
 			"{{range .}}" +
