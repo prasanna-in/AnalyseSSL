@@ -28,7 +28,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		user :=Api.GetUser(resp,req,jar)
 		j := db.GetHosts(user)
 		fmt.Println(j[0].Hostname)
-		resp.Header().Add("Content-Type", "text/html")
+		//resp.Header().Add("Content-Type", "text/html")
 		//fmt.Fprintf(resp, "<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" +
 		//	"</style></head><body>Hello %s<br/><ul>" +
 		//	"{{range .}}" +
@@ -38,15 +38,12 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		//	"<a href='/host'>Reports</a><br/>" +
 		//	"<a href='/host/add'>Add Host</a>" +
 		//	"<br/><a href='/api/auth/logout'>Logout</a></body></html>",user)\\
-		temp := template.New("Check")
-		temp.Parse("<html><head><style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;}" +
-			"</style></head><body>Hello %s<br/><ul>" +
+		temp := template.New("Checkmmm")
+		temp.Parse(("<html><body><ul>" +
 			"{{range .}}" +
-			"<li>{{. }}</li>" +
-			"</ul>" +
-			"<a href='/host'>Reports</a><br/>" +
-			"<a href='/host/add'>Add Host</a>" +
-			"<br/><a href='/api/auth/logout'>Logout</a></body></html>")
+			"<li>{{.}}</li>" +
+			"{{end}}" +
+			"</ul></body></html>"))
 		temp.Execute(resp,[]int{1,2,3,4})
 		//fmt.Fprintln(resp,"</br>")
 		//fmt.Fprintln(resp,j)
