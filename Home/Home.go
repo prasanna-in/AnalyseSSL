@@ -148,6 +148,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			http.Redirect(resp,req,"/public/login.html",http.StatusTemporaryRedirect)
 			return
 		}
+		fmt.Println("Request Method",req.Method)
 		if req.Method=="POST" {
 			log.Println("I am inside Post ADD")
 			req.ParseForm()
