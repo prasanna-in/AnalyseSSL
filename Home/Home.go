@@ -115,26 +115,24 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		header = append(header,"Key Strength")
 		header = append(header, "Key Algorithm")
 		record = append(record,header)
-		totalHosts:= 0
 		for _, value := range scans {
-			totalHosts++
-			var jsval ScanResult
+			var jsonScanResult ScanResult
 			var scanRecord []string
-			json.Unmarshal([]byte(value.Result),&jsval)
-			scanRecord = append(scanRecord,jsval.Hostname)
-			scanRecord = append(scanRecord,jsval.IPAddress)
-			scanRecord = append(scanRecord,strconv.FormatBool(jsval.Poodle))
-			scanRecord = append(scanRecord,strconv.FormatBool(jsval.FREAK))
-			scanRecord = append(scanRecord,strconv.FormatBool(jsval.Drown))
-			scanRecord = append(scanRecord,strconv.FormatBool(jsval.HeartBleed))
-			scanRecord = append(scanRecord,jsval.Grade)
-			scanRecord = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
-			scanRecord = append(scanRecord, strconv.Itoa(jsval.KeySize))
-			scanRecord = append(scanRecord,strconv.Itoa(jsval.KeyStrength))
-			scanRecord = record(scanRecord,jsval.Signature)
-			record = append(record,scanRecord)
-		}
-		log.Println("Record : ",fmt.Sprint(record))
+			//json.Unmarshal([]byte(value.Result),&jsval)
+			jsonScanResult = JsonfromStr(value.Result)
+
+			scanRecord = append(scanRecord,jsonScanResult.Hostname)
+			scanRecord = append(scanRecord,jsonScanResult.IPAddress)
+			scanRecord = append(scanRecord,strconv.FormatBool(jsonScanResult.Poodle))
+			scanRecord = append(scanRecord,strconv.FormatBool(jsonScanResult.FREAK))
+			scanRecord = append(scanRecord,strconv.FormatBool(jsonScanResult.Drown))
+			scanRecord = append(scanRecord,strconv.FormatBool(jsonScanResult.HeartBleed))
+			scanRecord = append(scanRecord,jsonScanResult.Grade)
+			scanRecord = append(scanRecord,strconv.Itoa(jsonScanResult.Poodle_TLS))
+			scanRecord = append(scanRecord, strconv.Itoa(jsonScanResult.KeySize))
+			scanRecord = append(scanRecord,strconv.Itoa(jsonScanResult.KeyStrength))
+			scanRecord = record(scanRecord,jsonScanResult.Signature)
+			record = append(record,scanRecord)}
 		wr.WriteAll(record)
 		wr.Flush()
 		resp.Header().Set("Content-Type", "text/csv")
