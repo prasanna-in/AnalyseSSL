@@ -181,7 +181,11 @@ func performScan(host string) (ScanResult,error) {
 	if err != nil{
 		log.Println("Could Not create Scanner ....")
 	}
-	progress,_ := scanner.Analyze(host)
+	progress,err := scanner.Analyze(host)
+	if err !=nil{
+		log.Println(err.Error())
+		return ScanResult{},err.Error()
+	}
 	info,_ := progress.Info()
 	log.Println("scanning ... ",info.Host)
 	i := 0
