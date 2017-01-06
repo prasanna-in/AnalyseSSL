@@ -148,7 +148,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			http.Redirect(resp,req,"/public/login.html",http.StatusTemporaryRedirect)
 			return
 		}
-		if req.Method==http.MethodPost {
+		if req.Method=="POST" {
 			log.Println("I am inside Post ADD")
 			req.ParseForm()
 			user := Api.GetUser(resp, req, jar)
@@ -158,6 +158,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 				UserID:DbUser.ID,
 			}
 			db.CreateHost(host)
+			return
 		}
 		if req.Method==http.MethodGet{
 			fmt.Fprint(resp,"<html><body><p>Please Enter Your Hostname that you like to add to the scanner</p>" +
@@ -167,6 +168,7 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 				"</form>" +
 				"</body>" +
 				"</html>")
+			return
 		}
 	})
 }
