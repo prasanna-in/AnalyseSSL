@@ -184,7 +184,7 @@ func performScan(host string) (ScanResult,error) {
 	progress,err := scanner.Analyze(host)
 	if err !=nil{
 		log.Println(err.Error())
-		return ScanResult{},err.Error()
+		return ScanResult{},err
 	}
 	info,_ := progress.Info()
 	log.Println("scanning ... ",info.Host)
