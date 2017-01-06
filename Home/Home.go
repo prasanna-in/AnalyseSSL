@@ -26,10 +26,19 @@ type HomeHandle struct {
 	Grade string
 }
 
-func JsonfromStr(jsonstr string) ScanResult  {
-	var jsval ScanResult
-	json.Unmarshal([]byte(jsonstr),&jsval)
-	return jsval
+
+type ScanResult struct {
+	IPAddress string
+	Poodle bool
+	Drown bool
+	HeartBleed bool
+	FREAK bool
+	Poodle_TLS int
+	Grade string
+	Hostname string
+	KeySize int
+	KeyStrength int
+	Signature string
 }
 
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
@@ -78,6 +87,8 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		temp.Execute(resp,z)
 	})
 }
+
+//Report Create Function
 func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter,req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -100,6 +111,9 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		header = append(header,"HeartBleed")
 		header = append(header,"Grade")
 		header = append(header,"Poodle TLS")
+		header = append(header,"Key Size")
+		header = append(header,"Key Strength")
+		header = append(header, "Key Algorithm")
 		record = append(record,header)
 		totalHosts:= 0
 		for _, value := range scans {
@@ -115,6 +129,9 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			scanRecord = append(scanRecord,strconv.FormatBool(jsval.HeartBleed))
 			scanRecord = append(scanRecord,jsval.Grade)
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
+			scanRecord = append(scanRecord, strconv.Itoa(jsval.KeySize))
+			scanRecord = append(scanRecord,strconv.Itoa(jsval.KeyStrength))
+			scanRecord = record(scanRecord,jsval.Signature)
 			record = append(record,scanRecord)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
@@ -155,16 +172,6 @@ func handleAddHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	})
 }
 
-type ScanResult struct {
-	IPAddress string
-	Poodle bool
-	Drown bool
-	HeartBleed bool
-	FREAK bool
-	Poodle_TLS int
-	Grade string
-	Hostname string
-}
 
 func performScan(host string) (ScanResult,error) {
 	scanresult := ScanResult{}
@@ -178,9 +185,6 @@ func performScan(host string) (ScanResult,error) {
 	i := 0
 	for {
 		fmt.Println(info.Status)
-		fmt.Println(info.Endpoints[0].Progress)
-		fmt.Println(info.Endpoints[0].StatusDetailsMessage)
-		fmt.Println(info.Endpoints[0].IPAdress)
 		if info.Status ==check.STATUS_ERROR{
 			panic(info.StatusMessage)
 		}
@@ -205,6 +209,9 @@ func performScan(host string) (ScanResult,error) {
 	scanresult.Poodle_TLS = details.PoodleTLS
 	scanresult.Grade = detailedinfo.Grade
 	scanresult.Hostname = host
+	scanresult.KeySize = details.Key.Size
+	scanresult.KeyStrength = details.Key.Strength
+	scanresult.Signature = details.Cert.SigAlg
 	return scanresult,nil
 }
 
@@ -237,6 +244,12 @@ func handletest(jar *sessions.CookieStore) http.Handler {
 		temp.Execute(resp,[]int{1,2,3,4,5})
 
 	})
+}
+
+func JsonfromStr(jsonstr string) ScanResult  {
+	var jsval ScanResult
+	json.Unmarshal([]byte(jsonstr),&jsval)
+	return jsval
 }
 
 func RegisterHandler(m *mux.Router,jar *sessions.CookieStore, db DB.DbManager)  {
