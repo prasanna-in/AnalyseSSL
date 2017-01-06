@@ -194,12 +194,11 @@ func performScan(host string) (ScanResult,error) {
 			break
 		}
 
-		if i == 10{
+		if i == 5{
 			break
 		}
-		time.Sleep(60 * time.Second)
 		i++
-
+		time.Sleep(60 * time.Second)
 
 	}
 	detailedinfo,_ := progress.DetailedInfo(info.Endpoints[0].IPAdress)
