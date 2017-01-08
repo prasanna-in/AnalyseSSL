@@ -188,15 +188,18 @@ func performScan(host string) (ScanResult,error) {
 	info,_ := progress.Info()
 	log.Println("scanning ... ",info.Host)
 	i := 0
+	dns := 0
 	for {
 		fmt.Println(info.Status)
-		if info.Status ==check.STATUS_ERROR{
+		if info.Status ==check.STATUS_ERROR || dns == 8{
 			return ScanResult{},errors.New("Could Not start scan ...")
+		}
+		if info.Status == check.STATUS_DNS{
+			dns++
 		}
 		if info.Status == check.STATUS_READY{
 			break
 		}
-
 		if i == 5{
 			break
 		}
