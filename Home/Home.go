@@ -15,6 +15,7 @@ import (
 	"strconv"
 	"bytes"
 	"html/template"
+	"errors"
 )
 
 const Version  = "4.0.0"
@@ -111,7 +112,6 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		header = append(header,"HeartBleed")
 		header = append(header,"Grade")
 		header = append(header,"Poodle TLS")
-		header = append(header,"Key Size")
 		header = append(header,"Key Strength")
 		header = append(header,"Key Sign Algorithm")
 		record = append(record,header)
@@ -129,7 +129,6 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			scanRecord = append(scanRecord,strconv.FormatBool(jsval.HeartBleed))
 			scanRecord = append(scanRecord,jsval.Grade)
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
-			scanRecord = append(scanRecord, strconv.Itoa(jsval.KeySize))
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.KeyStrength))
 			record = append(record,scanRecord)
 		}
@@ -192,7 +191,7 @@ func performScan(host string) (ScanResult,error) {
 	for {
 		fmt.Println(info.Status)
 		if info.Status ==check.STATUS_ERROR{
-			panic(info.StatusMessage)
+			return ScanResult{},errors.New("Could Not start scan ...")
 		}
 		if info.Status == check.STATUS_READY{
 			break
