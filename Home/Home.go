@@ -136,7 +136,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		header = append(header,"Grade")
 		header = append(header,"Poodle TLS")
 		header = append(header,"Key Strength")
-		header = append(header,"Key Sign Algorithm")
+		header = append(header,"Scan Link ")
 		record = append(record,header)
 		totalHosts:=0
 		for _, value := range scans {
