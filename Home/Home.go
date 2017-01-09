@@ -157,11 +157,13 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			scanRecord = append(scanRecord,x)
 			record = append(record,scanRecord)
 		}
-		footer := []string("The Grade Score is calculated as follows :" +
+		var footer []string
+		footerval := "The Grade Score is calculated as follows :" +
 			"score >= 80 A" +
 			"score >= 65 B" +
 			"score >= 50 "+"score >= 35 D"+ "score >= 20 E"+ "score < 20 F"+"" +
-			"** Please note a blank 'Grade' can represent that the host was not reachable.")
+			"** Please note a blank 'Grade' can represent that the host was not reachable."
+		footer = append(footer,footerval)
 		record = append(record,footer)
 		wr.WriteAll(record)
 		wr.Flush()
