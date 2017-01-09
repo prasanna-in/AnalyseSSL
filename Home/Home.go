@@ -70,7 +70,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		temp := template.New("Checkmmm")
 		temp.Parse(("<html><body><ul>" +
 			"<style>body {padding-top: 40px; padding-bottom: 40px; background-color: #eee;} td {border: 1px solid;}" + "</style>" +
-			"<h1>Snapshot view of your hosts ... </h1>" +
+			"<center><h3>SSL Snapshot view of Hosts </h3></center>" +
 			"<table>" +
 			"<th>Host</th>" +
 			"<th>Last Scan Date</th>" +
