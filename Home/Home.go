@@ -82,7 +82,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<td>" + "{{.Host.Hostname}}" + "</td>" +
 			"<td>" +"{{.Scan.ScanTime}}"+"</td>" +
 			"<td>{{.Grade}}</td>" +
-			"<td> <a href={{.ScanLink}}>Scan Link</a></td>"+
+			"<td> <a href={{.ScanLink}} target='_blank'>Scan Link</a></td>"+
 			"</tr>" +
 			"{{end}}" +
 			"<tr>" +
