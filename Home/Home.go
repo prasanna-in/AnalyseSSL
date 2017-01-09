@@ -24,6 +24,7 @@ const API_NAME  = "SSL_SCANNER"
 type HomeHandle struct {
 	Host DB.Host
 	Scan DB.Scan
+	ScanLink string
 	Grade string
 }
 
@@ -42,6 +43,10 @@ type ScanResult struct {
 	Signature string
 }
 
+func CreateUrl(host string) string {
+	return fmt.Sprintf("https://www.ssllabs.com/ssltest/analyze.html?d=%s&hideResults=on",host)
+}
+
 func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if !Api.IsUserLoggedin(req,resp,jar){
@@ -57,6 +62,8 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			x.Scan = db.GetScan(value.ID)
 			y := JsonfromStr(x.Scan.Result)
 			x.Grade = y.Grade
+			str := CreateUrl(y.Hostname)
+			x.ScanLink = str
 			z = append(z,x)
 		}
 		fmt.Println(z)
@@ -68,25 +75,26 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<th>Host</th>" +
 			"<th>Last Scan Date</th>" +
 			"<th>Grade</th>" +
+			"<th>Scan</th>" +
 			"</th>" +
 			"{{range .}}" +
 			"<tr>" +
 			"<td>" + "{{.Host.Hostname}}" + "</td>" +
-
 			"<td>" +"{{.Scan.ScanTime}}"+"</td>" +
-			"<td>{{.Grade}}</td>"+
+			"<td>{{.Grade}}</td>" +
+			"<td> {{.ScanLink}}"+
 			"</tr>" +
 			"{{end}}" +
 			"<tr>" +
 			"<td>" +
 			"The Grade Score is calculated as follows : " +
-			"<br>" +
-			"score >= 80  A " +
-			"score >= 65  B " +
-			"score >= 50  C " +
-			"score >= 35  D " +
-			"score >= 20  E " +
-			"score <  20  F " +
+			"<br/>" +
+			"score >= 80  A " +"<br/>"+
+			"score >= 65  B " +"<br/>"+
+			"score >= 50  C " +"<br/>"+
+			"score >= 35  D " +"<br/>"+
+			"score >= 20  E " +"<br/>"+
+			"score <  20  F " +"<br/>"+
 			"</td>" +
 			"</tr>" +
 			"" +
