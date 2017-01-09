@@ -88,7 +88,6 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<tr>" +
 			"<td colspan='4'>" +
 			"<h5>The Grade Score is calculated as follows : </h5>" +
-			"<br/>" +
 			"score >= 80  A " +"<br/>"+
 			"score >= 65  B " +"<br/>"+
 			"score >= 50  C " +"<br/>"+
@@ -97,7 +96,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"score <  20  F " +"<br/>" +
 			"<br/>" +
 			"<br/>" +
-			"** Please Note a blank Grade can represent that the host was not reachable ..." +
+			"** Please note a blank 'Grade' can represent that the host was not reachable." +
 			"</td>"+
 			"</tr>" +
 			"</table>" +
