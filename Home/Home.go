@@ -25,6 +25,8 @@ type HomeHandle struct {
 	Host DB.Host
 	Scan DB.Scan
 	ScanLink string
+	KeySize string
+	KeyAlgo string
 	Grade string
 }
 
@@ -75,6 +77,8 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<th>Host</th>" +
 			"<th>Last Scan Date</th>" +
 			"<th>Grade</th>" +
+			"<th>Key Strength</th>" +
+			"<th>Key Algorithm</th>" +
 			"<th>Scan</th>" +
 			"</th>" +
 			"{{range .}}" +
@@ -82,6 +86,9 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<td>" + "{{.Host.Hostname}}" + "</td>" +
 			"<td>" +"{{.Scan.ScanTime}}"+"</td>" +
 			"<td>{{.Grade}}</td>" +
+			"<td>{{.KeySize}}" +
+			"</td>" +
+			"<td>{{.KeyAlgo}}</td>" +
 			"<td> <a href={{.ScanLink}} target='_blank'>Scan Link</a></td>"+
 			"</tr>" +
 			"{{end}}" +
@@ -136,6 +143,7 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 		header = append(header,"Grade")
 		header = append(header,"Poodle TLS")
 		header = append(header,"Key Strength")
+		header = append(header,"Key Algorithm")
 		header = append(header,"Scan Link ")
 		record = append(record,header)
 		totalHosts:=0
@@ -153,18 +161,11 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			scanRecord = append(scanRecord,jsval.Grade)
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.KeyStrength))
+			scanRecord = append(scanRecord,strconv.Itoa(jsval.Signature))
 			x := CreateUrl(jsval.Hostname)
 			scanRecord = append(scanRecord,x)
 			record = append(record,scanRecord)
 		}
-		//var footer []string
-		//footerval := "The Grade Score is calculated as follows :" +
-		//	"score >= 80 A" +
-		//	"score >= 65 B" +
-		//	"score >= 50 "+"score >= 35 D"+ "score >= 20 E"+ "score < 20 F"+"" +
-		//	"** Please note a blank 'Grade' can represent that the host was not reachable."
-		//footer = append(footer,footerval)
-		//record = append(record,footer)
 		wr.WriteAll(record)
 		wr.Write([]string{"** Please note a blank 'Grade' can represent that the host was not reachable."})
 		wr.Flush()
