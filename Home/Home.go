@@ -102,9 +102,11 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"</table>" +
 			"<br/>" +
 			"<br/>" +
+			"<table>" +
 			"<th><a href='/host'>Reports</a></th>" +
 			//"<th><a href='/host/add'>Add Host</a></th>" +
 			"<th><a href='/api/auth/logout'>Logout</a></th>" +
+			"</table>" +
 			"</body></html>"))
 		temp.Execute(resp,z)
 	})
