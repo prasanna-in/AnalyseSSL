@@ -87,7 +87,7 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"{{end}}" +
 			"<tr>" +
 			"<td colspan='4'>" +
-			"<h3>The Grade Score is calculated as follows : </h3>" +
+			"<h5>The Grade Score is calculated as follows : </h5>" +
 			"<br/>" +
 			"score >= 80  A " +"<br/>"+
 			"score >= 65  B " +"<br/>"+
