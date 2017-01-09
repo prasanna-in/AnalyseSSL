@@ -66,6 +66,8 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			x.Grade = y.Grade
 			str := CreateUrl(y.Hostname)
 			x.ScanLink = str
+			x.KeySize = strconv.Itoa(y.KeyStrength)
+			x.KeyAlgo = y.Signature
 			z = append(z,x)
 		}
 		fmt.Println(z)
