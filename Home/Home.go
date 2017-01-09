@@ -153,6 +153,8 @@ func handleHost(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			scanRecord = append(scanRecord,jsval.Grade)
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.Poodle_TLS))
 			scanRecord = append(scanRecord,strconv.Itoa(jsval.KeyStrength))
+			x := CreateUrl(jsval.Hostname)
+			scanRecord = append(scanRecord,x)
 			record = append(record,scanRecord)
 		}
 		log.Println("Record : ",fmt.Sprint(record))
