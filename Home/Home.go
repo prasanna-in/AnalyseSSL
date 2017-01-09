@@ -77,6 +77,19 @@ func handleHome(jar *sessions.CookieStore, db DB.DbManager) http.Handler {
 			"<td>{{.Grade}}</td>"+
 			"</tr>" +
 			"{{end}}" +
+			"<tr>" +
+			"<td>" +
+			"The Grade Score is calculated as follows : " +
+			"<br>" +
+			"score >= 80  A " +
+			"score >= 65  B " +
+			"score >= 50  C " +
+			"score >= 35  D " +
+			"score >= 20  E " +
+			"score <  20  F " +
+			"</td>" +
+			"</tr>" +
+			"" +
 			"</table>" +
 			"<table>" +
 			"<br/>" +
